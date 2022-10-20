@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Room from '../views/RoomList.vue'
+import RoomList from '../views/RoomList.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'roomlist',
-    component: Room
+    component: RoomList
   },
 ]
 
