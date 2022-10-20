@@ -1,4 +1,4 @@
-# nimar
+# nima
 
 ## Project setup
 ```

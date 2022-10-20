@@ -1,44 +1,42 @@
 <template>
   <div>
     <h1>NimaR</h1>
-    <div class="room_list" v-for="room in rooms" :key="room.roomID">
+    <div class="room_list" v-for="room in rooms" :key="room.getRoomid() ">
       <div class="room">
-        <h2>{{ room.roomName }}</h2>
-        <div class="player_list" v-for="player_name in room.playerNames" :key="player_name">
+        <h2>{{ room.getRoomname() }}</h2>
+        <div class="player_list" v-for="player_name in room.getPlayernamesList()" :key="player_name">
           <div class="player_name">
             {{ player_name }}
           </div>
         </div>
-        <v-btn @click="join_room(room.roomID)"></v-btn>
+        <v-btn @click="join_room(room.getRoomid())"></v-btn>
       </div>
     </div>
     <v-btn @click="show_add_room_dialog">
       部屋を作成
     </v-btn>
     <v-dialog v-model="is_show_add_room_dialog">
-      <v-text-field v-model="add_room_name" value="部屋名" />
+      <v-text-field v-model="add_room_name" placeholder="部屋名" />
       <v-btn @click="add_room">部屋を作成</v-btn>
     </v-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import { google } from '../google/protobuf/empty'
-import { NimaRClient, Room, CreateRoomRequest } from '../nimar'
-import { ChannelCredentials } from '@grpc/grpc-js'
+import { Vue } from 'vue-class-component'
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
+import { Room, CreateRoomRequest } from '../nimar_pb'
+import { NimaRClient } from '../NimarServiceClientPb'
 
 export default class RoomList extends Vue {
   // private api: NimaRClient = new NimaRClient("https://"+location.host+"/api")
-  private api: NimaRClient = new NimaRClient("https://localhost:2222/api", ChannelCredentials.createInsecure())
+  private api: NimaRClient = new NimaRClient("https://localhost:2222/api")
 
   private _rooms: Array<Room> = new Array<Room>()
   get rooms(): Array<Room> { return this._rooms }
   set rooms(rooms: Array<Room>) { this._rooms = rooms }
 
-  private _is_show_add_room_dialog = false
-  set is_show_add_room_dialog(b: boolean) { this._is_show_add_room_dialog = b }
-  get is_show_add_room_dialog(): boolean { return this.is_show_add_room_dialog }
+  is_show_add_room_dialog = false
 
   private _add_room_name = ""
   get add_room_name(): string { return this._add_room_name }
@@ -49,13 +47,14 @@ export default class RoomList extends Vue {
   }
 
   reload_room_list() {
-    this.api.ListRooms(new google.protobuf.Empty(), ((res: any) => {
-      let rooms: Array<Room> = new Array<Room>()
-      if (res) {
-        rooms = res.response.rooms
-      }
-      rooms === null ? this.rooms = new Array<Room>() : this.rooms = rooms
-    }))
+    this.api.listRooms(new Empty(), null)
+      .then((res: any) => {
+        let rooms: Array<Room> = new Array<Room>()
+        if (res) {
+          rooms = res.response.rooms
+        }
+        rooms === null ? this.rooms = new Array<Room>() : this.rooms = rooms
+      })
   }
 
   show_add_room_dialog() {
@@ -68,10 +67,11 @@ export default class RoomList extends Vue {
     this.is_show_add_room_dialog = false
 
     let create_room_request: CreateRoomRequest = new CreateRoomRequest();
-    create_room_request.roomName = room_name
-    this.api.CreateRoom(create_room_request, () => {
-      this.reload_room_list()
-    })
+    create_room_request.setRoomname(room_name)
+    this.api.createRoom(create_room_request, null)
+      .then(() => {
+        this.reload_room_list()
+      })
   }
   join_room(roomName: string) {
     //TODO 
