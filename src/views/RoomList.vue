@@ -9,7 +9,7 @@
             {{ player_name }}
           </div>
         </div>
-        <v-btn @click="join_room(room.getRoomid())"></v-btn>
+        <v-btn @click="join_room(room.getRoomid())">参加</v-btn>
       </div>
     </div>
     <v-btn @click="show_add_room_dialog">
@@ -25,12 +25,13 @@
 <script lang="ts">
 import { Vue } from 'vue-class-component'
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
-import { Room, CreateRoomRequest } from '../nimar_pb'
+import { Room, Rooms, CreateRoomRequest } from '../nimar_pb'
 import { NimaRClient } from '../NimarServiceClientPb'
 
 export default class RoomList extends Vue {
-  // private api: NimaRClient = new NimaRClient("https://"+location.host+"/api")
-  private api: NimaRClient = new NimaRClient("https://localhost:2222/api")
+  private metadata = { "access-control-expose-headers": "x-grpc-web,grpc-timeout", "content-type": "application/grpc+json" } // apiの第2引数
+
+  private api: NimaRClient = new NimaRClient("https://" + location.host, null, null)
 
   private _rooms: Array<Room> = new Array<Room>()
   get rooms(): Array<Room> { return this._rooms }
@@ -47,13 +48,9 @@ export default class RoomList extends Vue {
   }
 
   reload_room_list() {
-    this.api.listRooms(new Empty(), null)
-      .then((res: any) => {
-        let rooms: Array<Room> = new Array<Room>()
-        if (res) {
-          rooms = res.response.rooms
-        }
-        rooms === null ? this.rooms = new Array<Room>() : this.rooms = rooms
+    this.api.listRooms(new Empty(), this.metadata)
+      .then((rooms: Rooms) => {
+        rooms ? this.rooms = rooms.getRoomsList() : this.rooms = new Array<Room>()
       })
   }
 
@@ -68,8 +65,9 @@ export default class RoomList extends Vue {
 
     let create_room_request: CreateRoomRequest = new CreateRoomRequest();
     create_room_request.setRoomname(room_name)
-    this.api.createRoom(create_room_request, null)
-      .then(() => {
+
+    this.api.createRoom(create_room_request, this.metadata)
+      .then((room: Room) => {
         this.reload_room_list()
       })
   }
