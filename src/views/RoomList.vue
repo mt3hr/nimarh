@@ -1,78 +1,78 @@
 <template>
-  <div>
-    <h1>NimaR</h1>
-    <div class="room_list" v-for="room in rooms" :key="room.getRoomid() ">
+  <v-container class="pa-3">
+    <v-container>
+      <v-row>
+        <h1>NimaR</h1>
+        <v-spacer />
+        <v-btn class="mt-3" @click="show_add_room_dialog">
+          部屋を作成
+        </v-btn>
+      </v-row>
+    </v-container>
+    <v-card class="room_list pa-2" v-for="room in rooms" :key="room.table_id ">
       <div class="room">
-        <h2>{{ room.getRoomname() }}</h2>
-        <div class="player_list" v-for="player_name in room.getPlayernamesList()" :key="player_name">
-          <div class="player_name">
-            {{ player_name }}
+        <v-card-title>{{ room.table_name }}</v-card-title>
+        <v-card-text class="pa-2">
+          <div class="player_list" v-for="player_name in room.player_names" :key="player_name">
+            <div class="player_name">
+              <li>{{ player_name }}</li>
+            </div>
           </div>
-        </div>
-        <v-btn @click="join_room(room.getRoomid())">参加</v-btn>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn @click="() => join_room(room.table_id)">参加</v-btn>
+        </v-card-actions>
       </div>
-    </div>
-    <v-btn @click="show_add_room_dialog">
-      部屋を作成
-    </v-btn>
-    <v-dialog v-model="is_show_add_room_dialog">
-      <v-text-field v-model="add_room_name" placeholder="部屋名" />
-      <v-btn @click="add_room">部屋を作成</v-btn>
+    </v-card>
+    <v-container>
+      <v-row>
+      </v-row>
+    </v-container>
+    <v-dialog v-model="is_show_add_table_dialog">
+      <v-card class="pa-3">
+        <v-text-field v-model="add_table_name" placeholder="部屋名" />
+        <v-card-actions>
+          <v-spacer />
+          <v-btn @click="add_room">部屋を作成</v-btn>
+        </v-card-actions>
+      </v-card>
+
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb'
-import { Room, Rooms, CreateRoomRequest } from '../nimar_pb'
-import { NimaRClient } from '../NimarServiceClientPb'
 
 export default class RoomList extends Vue {
-  private metadata = { "access-control-expose-headers": "x-grpc-web,grpc-timeout", "content-type": "application/grpc+json" } // apiの第2引数
+  rooms: Array<any> = []
+  table_socket: WebSocket
 
-  private api: NimaRClient = new NimaRClient("https://" + location.host, null, null)
-
-  private _rooms: Array<Room> = new Array<Room>()
-  get rooms(): Array<Room> { return this._rooms }
-  set rooms(rooms: Array<Room>) { this._rooms = rooms }
-
-  is_show_add_room_dialog = false
-
-  private _add_room_name = ""
-  get add_room_name(): string { return this._add_room_name }
-  set add_room_name(room_name: string) { this._add_room_name = room_name }
+  is_show_add_table_dialog = false
+  add_table_name = ""
 
   created(): void {
-    this.reload_room_list()
-  }
-
-  reload_room_list() {
-    this.api.listRooms(new Empty(), this.metadata)
-      .then((rooms: Rooms) => {
-        rooms ? this.rooms = rooms.getRoomsList() : this.rooms = new Array<Room>()
-      })
+    this.table_socket = new WebSocket("ws://localhost:2222/nimar/ws_list_table")
+    this.table_socket.onmessage = (e: MessageEvent) => {
+      this.rooms = JSON.parse(e.data)
+    }
   }
 
   show_add_room_dialog() {
-    this.is_show_add_room_dialog = true
+    this.is_show_add_table_dialog = true
   }
 
   add_room() {
-    let room_name: string = this.add_room_name
-    this.add_room_name = ""
-    this.is_show_add_room_dialog = false
+    let add_table_name: string = this.add_table_name
+    this.add_table_name = ""
+    this.is_show_add_table_dialog = false
 
-    let create_room_request: CreateRoomRequest = new CreateRoomRequest();
-    create_room_request.setRoomname(room_name)
-
-    this.api.createRoom(create_room_request, this.metadata)
-      .then((room: Room) => {
-        this.reload_room_list()
-      })
+    fetch("http://localhost:2222/nimar/create_table?table_name=" + add_table_name)
   }
-  join_room(roomName: string) {
-    //TODO 
+
+  join_room(roomID: string) {
+    this.$router.push('/room?tableid=' + roomID)
   }
 }
 </script>
