@@ -22,7 +22,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn @click="() => join_table(table.ID)">参加</v-btn>
+          <v-btn @click="() => join_table(table.ID)" :disabled="table.Player2 !== null">参加</v-btn>
         </v-card-actions>
       </div>
     </v-card>
@@ -32,13 +32,12 @@
     </v-container>
     <v-dialog v-model="is_show_add_table_dialog">
       <v-card class="pa-3">
-        <v-text-field v-model="create_table_name" placeholder="部屋名" />
+        <v-text-field @keypress.enter="add_table" v-model="create_table_name" placeholder="部屋名" autofocus />
         <v-card-actions>
           <v-spacer />
           <v-btn @click="add_table">部屋を作成</v-btn>
         </v-card-actions>
       </v-card>
-
     </v-dialog>
   </v-container>
 </template>
@@ -47,7 +46,7 @@
 import api from '@/api'
 import { Vue } from 'vue-class-component'
 
-export default class tableList extends Vue {
+export default class TableList extends Vue {
   tables: Array<any> = []
   table_socket: WebSocket
 
