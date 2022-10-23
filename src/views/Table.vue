@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import api from '@/api';
 import { Vue } from 'vue-class-component';
 
 export default class Room extends Vue {
@@ -25,13 +26,9 @@ export default class Room extends Vue {
     }
 
     join_room() {
-        fetch("http://localhost:2222/nimar/get_player_id")
-            .then((res: Response) => {
-                return res.json()
-            })
-            .then((json) => {
-                let player_id = json.player_id
-                this.game_table_socket = new WebSocket("ws://localhost:2222/nimar/ws_game_table?roomid=" + this.$route.query.roomid)
+        api.get_player_id_promise()
+            .then((player_id: any) => {
+                this.game_table_socket = api.generate_join_room_socket(String(this.$route.query.tableid), String(player_id.PlayerId), this.player_name)
                 this.is_show_player_name_dialog = false
                 this.game_table_socket.onmessage = (e: MessageEvent) => {
                     console.log(e)
