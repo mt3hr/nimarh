@@ -46,9 +46,10 @@
 import api from '@/api'
 import { Vue } from 'vue-class-component'
 
+
 export default class TableList extends Vue {
   tables: Array<any> = []
-  table_socket: WebSocket
+  table_socket = api.generate_list_table_socket()
 
   is_show_add_table_dialog = false
   create_table_name = ""

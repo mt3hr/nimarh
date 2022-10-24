@@ -2,9 +2,9 @@ class API {
     private _hostname = location.hostname
     private get hostname(): string { return this._hostname }
     private _port = "2222"
+    // port = location.port
     private get port(): string { return this._port }
 
-    // port = location.port
 
     get_player_id_promise(): Promise<any> {
         return fetch("http://" + this.hostname + ":" + this.port + "/nimar/get_player_id")
@@ -25,7 +25,6 @@ class API {
 
     create_table_promise(table_name: string): Promise<any> {
         return fetch("http://" + this.hostname + ":" + this.port + "/nimar/create_table?tablename=" + table_name)
-          .then((res) => res.json())
     }
 
     execute_operator_promise(operator: any): Promise<any> {
