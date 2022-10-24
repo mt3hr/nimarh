@@ -29,7 +29,6 @@ class API {
 
     execute_operator_promise(operator: any): Promise<any> {
         return fetch("http://" + this.hostname + ":" + this.port + "/nimar/execute_operator", { method: "POST", body: JSON.stringify(operator) })
-          .then((res) => res.json())
     }
 }
 export default new API()

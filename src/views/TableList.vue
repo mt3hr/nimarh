@@ -49,15 +49,15 @@ import { Vue } from 'vue-class-component'
 
 export default class TableList extends Vue {
   tables: Array<any> = []
-  table_socket = api.generate_list_table_socket()
+  table_socket: WebSocket = api.generate_list_table_socket()
 
   is_show_add_table_dialog = false
   create_table_name = ""
 
   created(): void {
-    this.table_socket = api.generate_list_table_socket()
     this.table_socket.onmessage = (e: MessageEvent) => {
-      e.data ? this.tables = JSON.parse(e.data) : this.tables = new Array<any>()
+      let table = JSON.parse(e.data)
+      table ? this.tables = table : this.tables = new Array<any>()
     }
   }
 
@@ -74,7 +74,7 @@ export default class TableList extends Vue {
   }
 
   join_table(tableID: string) {
-    this.$router.push('/table?tableid=' + tableID)
+    this.$router.replace('/table?tableid=' + tableID)
   }
 }
 </script>
