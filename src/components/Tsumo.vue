@@ -142,7 +142,7 @@ export default class Tsumo extends Vue {
 }
 
 .tsumo {
-    width: 660px;
+    width: 693px;
 }
 
 .tsumotiles {
