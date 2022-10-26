@@ -1,5 +1,5 @@
 <template>
-    <div v-if="filename">
+    <div class="tile" v-if="filename">
         <img :src="require(`@/assets/${filename}`)" />
     </div>
 </template>
@@ -98,6 +98,9 @@ export default class Tile extends Vue {
 }
 </script>
 
-<style>
-
+<style scoped>
+.tile {
+    width: 33px;
+    height: 60px;
+}
 </style>

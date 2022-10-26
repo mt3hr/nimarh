@@ -1,24 +1,22 @@
 <template>
-    <div>
-        <v-container>
-            <v-row :class="tiles1upclass">
-                <Tile :class="playerclass" v-for="(tile, index) in tiles1up" :key="index" :suit="tile.Suit"
-                    :num="tile.Num" :state="tile.State" />
-            </v-row>
-            <v-row :class="tiles1downclass">
-                <Tile :class="playerclass" v-for="(tile, index) in tiles1down" :key="index" :suit="tile.Suit"
-                    :num="tile.Num" :state="tile.State" />
-            </v-row>
-            <v-row :class="tiles2upclass">
-                <Tile :class="playerclass" v-for="(tile, index) in tiles2up" :key="index" :suit="tile.Suit"
-                    :num="tile.Num" :state="tile.State" />
-            </v-row>
-            <v-row :class="tiles2downclass">
-                <Tile :class="playerclass" v-for="(tile, index) in tiles2down" :key="index" :suit="tile.Suit"
-                    :num="tile.Num" :state="tile.State" />
-            </v-row>
-        </v-container>
-    </div>
+    <v-container class="tsumo">
+        <v-row class="tsumotiles" :class="tiles1upclass">
+            <Tile :class="playerclass" v-for="(tile, index) in tiles1up" :key="index" :suit="tile.Suit" :num="tile.Num"
+                :state="tile.State" />
+        </v-row>
+        <v-row class="tsumotiles" :class="tiles1downclass">
+            <Tile :class="playerclass" v-for="(tile, index) in tiles1down" :key="index" :suit="tile.Suit"
+                :num="tile.Num" :state="tile.State" />
+        </v-row>
+        <v-row class="tsumotiles" :class="tiles2upclass">
+            <Tile :class="playerclass" v-for="(tile, index) in tiles2up" :key="index" :suit="tile.Suit" :num="tile.Num"
+                :state="tile.State" />
+        </v-row>
+        <v-row class="tsumotiles" :class="tiles2downclass">
+            <Tile :class="playerclass" v-for="(tile, index) in tiles2down" :key="index" :suit="tile.Suit"
+                :num="tile.Num" :state="tile.State" />
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">import api from '@/api';
@@ -88,7 +86,7 @@ export default class Tsumo extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .player1 {}
 
 .player2 {
@@ -141,5 +139,13 @@ export default class Tsumo extends Vue {
     position: relative;
     top: -35px;
     z-index: 1;
+}
+
+.tsumo {
+    width: 660px;
+}
+
+.tsumotiles {
+    height: 60px;
 }
 </style>

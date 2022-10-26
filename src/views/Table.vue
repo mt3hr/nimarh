@@ -1,27 +1,32 @@
 <template>
     <div>
         <v-container :class="playerclass">
-            <v-row :class="playerclass">
+            <v-row class="hand" :class="playerclass">
                 <v-spacer />
-                <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                    :state="tile.State" @click="tile_on_click(tile)" />
-                <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
-                    :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
-                    :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" />
+                <v-row class="handtiles">
+                    <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
+                        :state="tile.State" @click="tile_on_click(tile)" />
+                    <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
+                        :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
+                        :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" />
+                </v-row>
                 <v-spacer />
+
             </v-row>
             <v-row>
                 <v-spacer />
                 <Tsumo :table="table" />
                 <v-spacer />
             </v-row>
-            <v-row :class="playerclass">
+            <v-row class="hand" :class="playerclass">
                 <v-spacer />
-                <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                    :state="tile.State" @click="tile_on_click(tile)" />
-                <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
-                    :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
-                    :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" />
+                <v-row class="handtiles">
+                    <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
+                        :state="tile.State" @click="tile_on_click(tile)" />
+                    <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
+                        :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
+                        :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" />
+                </v-row>
                 <v-spacer />
             </v-row>
         </v-container>
@@ -126,7 +131,7 @@ export default class Table extends Vue {
             this.player1_tsumori_tile = {}
         }
         if (this.table && this.table.Player1 && this.table.Player1.Hand) {
-            this.table.Player2.Hand.forEach((tile)=> {
+            this.table.Player2.Hand.forEach((tile) => {
                 if (playerIndex == 2) {
                     tile.State = new TileState().PLAYER
                 } else {
@@ -208,5 +213,15 @@ export default class Table extends Vue {
 
 .player2 {
     transform: rotate(180deg);
+}
+
+.hand {
+    height: 60px;
+    margin: 20px;
+}
+
+.handtiles {
+    height: 60px;
+    width: 462px;
 }
 </style>
