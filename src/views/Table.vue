@@ -5,27 +5,38 @@
                 <v-spacer />
                 <v-row class="handtiles">
                     <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                        :state="tile.State" @click="tile_on_click(tile)" />
+                        :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
                     <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
                         :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
-                        :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" />
+                        :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" :table="table"
+                        :player_id="player_id" />
                 </v-row>
                 <v-spacer />
-
             </v-row>
             <v-row>
                 <v-spacer />
-                <Tsumo :table="table" />
+                <Kawa class="kawa" :table="table" :player_id="player2_id" :rotate180tile="is_player1" />
+                <v-spacer />
+            </v-row>
+            <v-row>
+                <v-spacer />
+                <Tsumo class="tsumo" :table="table" :player_id="player_id" :rotate180tile="is_player1" />
+                <v-spacer />
+            </v-row>
+            <v-row>
+                <v-spacer />
+                <Kawa class="kawa" :table="table" :player_id="player1_id" :rotate180tile="!is_player1" />
                 <v-spacer />
             </v-row>
             <v-row class="hand" :class="playerclass">
                 <v-spacer />
                 <v-row class="handtiles">
                     <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                        :state="tile.State" @click="tile_on_click(tile)" />
+                        :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
                     <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
                         :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
-                        :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" />
+                        :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" :table="table"
+                        :player_id="player_id" />
                 </v-row>
                 <v-spacer />
             </v-row>
@@ -54,6 +65,7 @@
 <script lang="ts">
 import api from '@/api';
 import Tsumo from '@/components/Tsumo.vue';
+import Kawa from '@/components/Kawa.vue';
 import OperatorType from '@/nimar/OperatorType';
 import TileState from '@/nimar/TileState';
 import { Vue, Options } from 'vue-class-component';
@@ -64,6 +76,7 @@ import Tile from '../components/Tile.vue'
     components: {
         Tile,
         Tsumo,
+        Kawa,
     },
 })
 
@@ -77,6 +90,8 @@ export default class Table extends Vue {
     player_id = ""
     started_game = false
 
+    is_player1 = false
+
     table: any = {}
     operators = []
     player1_hand: any = []
@@ -84,6 +99,8 @@ export default class Table extends Vue {
     player2_hand: any = []
     player2_tsumori_tile: any = {}
     tsumo: any = []
+    player1_id = ""
+    player2_id = ""
 
     playerclass = "player1"
 
@@ -93,7 +110,6 @@ export default class Table extends Vue {
             if (operator.OperatorType === new OperatorType().OPERATOR_DAHAI) {
                 let target_tile = operator.TargetTiles[0]
                 if (tile.Name === target_tile.Name) {
-                    console.log(tile.Name)
                     this.operators.splice(0)
                     api.execute_operator_promise(operator)
                     break
@@ -104,8 +120,10 @@ export default class Table extends Vue {
 
     @Watch('table')
     updateHhand() {
-        let playerIndex = this.table.Player1.ID === this.player_id ? 1 : 2
+        this.is_player1 = this.table.Player1.ID === this.player_id
+        let playerIndex = this.is_player1 ? 1 : 2
         this.playerclass = playerIndex === 1 ? "player1" : "player2"
+
         this.player1_hand = []
         this.player2_hand = []
         this.tsumo = []
@@ -152,11 +170,13 @@ export default class Table extends Vue {
             this.player2_tsumori_tile = {}
         }
         if (this.table && this.table.Tsumo && this.table.Tsumo.Tiles) {
-            this.table.Tsumo.Tiles.forEach((tile) => {
+            this.table.Tsumo.Tiles.forEach((tile: any) => {
                 tile.State = new TileState().DOWN
                 this.tsumo.push(tile)
             });
         }
+        this.player1_id = this.table.Player1.ID
+        this.player2_id = this.table.Player2.ID
     }
 
     created() {
@@ -217,7 +237,14 @@ export default class Table extends Vue {
 
 .hand {
     height: 60px;
-    margin: 20px;
+    margin: 10px;
+}
+
+.tsumo {
+}
+
+.kawa {
+    margin: 10px;
 }
 
 .handtiles {

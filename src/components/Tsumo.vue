@@ -2,19 +2,19 @@
     <v-container class="tsumo">
         <v-row class="tsumotiles" :class="tiles1upclass">
             <Tile :class="playerclass" v-for="(tile, index) in tiles1up" :key="index" :suit="tile.Suit" :num="tile.Num"
-                :state="tile.State" />
+                :state="tile.State" :table="table" :player_id="player_id" />
         </v-row>
         <v-row class="tsumotiles" :class="tiles1downclass">
             <Tile :class="playerclass" v-for="(tile, index) in tiles1down" :key="index" :suit="tile.Suit"
-                :num="tile.Num" :state="tile.State" />
+                :num="tile.Num" :state="tile.State" :table="table" :player_id="player_id" />
         </v-row>
         <v-row class="tsumotiles" :class="tiles2upclass">
             <Tile :class="playerclass" v-for="(tile, index) in tiles2up" :key="index" :suit="tile.Suit" :num="tile.Num"
-                :state="tile.State" />
+                :state="tile.State" :table="table" :player_id="player_id" />
         </v-row>
         <v-row class="tsumotiles" :class="tiles2downclass">
             <Tile :class="playerclass" v-for="(tile, index) in tiles2down" :key="index" :suit="tile.Suit"
-                :num="tile.Num" :state="tile.State" />
+                :num="tile.Num" :state="tile.State" :table="table" :player_id="player_id" />
         </v-row>
     </v-container>
 </template>
@@ -33,6 +33,7 @@ import Tile from './Tile.vue';
 })
 export default class Tsumo extends Vue {
     @Prop() table: any
+    @Prop() player_id: string
     playerclass = "player1"
 
     tiles1up = []
@@ -45,20 +46,14 @@ export default class Tsumo extends Vue {
     tiles2upclass = "tiles2upforplayer1"
     tiles2downclass = "tiles2downforplayer1"
 
-    player_id: string
-
     @Watch("table")
     updateTiles() {
-        api.get_player_id_promise()
-            .then((player_id: any) => {
-                this.player_id = player_id
-                let playerIndex = this.table.Player1.ID == this.player_id ? 1 : 2
-                this.playerclass = playerIndex == 1 ? "player1" : "player2"
-                this.tiles1upclass = playerIndex == 1 ? "tiles1upforplayer1" : "tiles1upforplayer2"
-                this.tiles1downclass = playerIndex == 1 ? "tiles1downforplayer1" : "tiles1downforplayer2"
-                this.tiles2upclass = playerIndex == 1 ? "tiles2upforplayer1" : "tiles2upforplayer2"
-                this.tiles2downclass = playerIndex == 1 ? "tiles2downforplayer1" : "tiles2downforplayer2"
-            })
+        let playerIndex = this.table.Player1.ID == this.player_id ? 1 : 2
+        this.playerclass = playerIndex == 1 ? "player1" : "player2"
+        this.tiles1upclass = playerIndex == 1 ? "tiles1upforplayer1" : "tiles1upforplayer2"
+        this.tiles1downclass = playerIndex == 1 ? "tiles1downforplayer1" : "tiles1downforplayer2"
+        this.tiles2upclass = playerIndex == 1 ? "tiles2upforplayer1" : "tiles2upforplayer2"
+        this.tiles2downclass = playerIndex == 1 ? "tiles2downforplayer1" : "tiles2downforplayer2"
 
         this.tiles1up.splice(0)
         this.tiles1down.splice(0)

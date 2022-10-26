@@ -1,6 +1,6 @@
 <template>
-    <div class="tile" v-if="filename">
-        <img :src="require(`@/assets/${filename}`)" />
+    <div class="tile" :class="rotate180class" v-if="filename">
+        <v-img :src="require(`@/assets/${filename}`)" :max-height="height" :max-width="width"/>
     </div>
 </template>
 
@@ -11,10 +11,17 @@ import { Vue } from 'vue-class-component';
 import { Prop, Watch } from "vue-property-decorator"
 
 export default class Tile extends Vue {
+    @Prop() table: any
+    @Prop() player_id: string
     @Prop() suit: number
     @Prop() num: number
     @Prop() state: number
+    @Prop() rotate180: boolean
     filename: string
+    rotate180class = ""
+
+    height = 59
+    width = 33
 
     @Watch("suit")
     update_filename1() {
@@ -31,13 +38,25 @@ export default class Tile extends Vue {
         this.update_filename()
     }
 
+    @Watch("player_id")
+    update_filename4() {
+        this.update_filename()
+    }
+
+    @Watch("rotate180")
+    update_filename5() {
+        this.update_filename()
+    }
+
     created(): void {
         this.update_filename()
     }
 
     update_filename() {
+        this.rotate180class = this.rotate180 ? "rotate180" : ""
         let filename = ""
         filename += "p_"
+
         switch (this.suit) {
             case new Suit().MANZU:
                 filename += "ms"
@@ -81,6 +100,13 @@ export default class Tile extends Vue {
                 filename = "p_bk_5.gif"
                 this.filename = filename
                 return
+            case new TileState().OPEN:
+                if (!this.rotate180) {
+                    filename += "_1"
+                } else {
+                    filename += "_2"
+                }
+                break
             case new TileState().OPEN_LEFT:
                 filename += "_3"
                 break
@@ -101,6 +127,10 @@ export default class Tile extends Vue {
 <style scoped>
 .tile {
     width: 33px;
-    height: 60px;
+    height: 59px;
+}
+
+.rotate180 {
+    transform: rotate(180deg);
 }
 </style>
