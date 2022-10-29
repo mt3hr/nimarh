@@ -2,41 +2,131 @@
     <div>
         <v-container :class="playerclass">
             <v-row class="hand" :class="playerclass">
-                <v-spacer />
-                <v-row class="handtiles">
-                    <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                        :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
-                    <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
-                        :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
-                        :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" :table="table"
-                        :player_id="player_id" />
-                </v-row>
-                <v-spacer />
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <!-- <v-col :cols="'auto'"> -->
+                <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
+                    :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
+                <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
+                    :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
+                    :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" :table="table"
+                    :player_id="player_id" />
+                <!-- </v-col> -->
+                <v-col>
+                    <v-spacer />
+                </v-col>
+            </v-row>
+            <v-row class="opened_tiles_wrap" :class="playerclass">
+                <v-spacer v-if="playerclass === 'player2'" />
+                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles1" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles2" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles3" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles4" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_pe_tiles" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <v-spacer v-if="playerclass === 'player1'" />
             </v-row>
             <v-row>
-                <v-spacer />
-                <Kawa class="kawa" :table="table" :player_id="player2_id" :rotate180tile="is_player1" />
-                <v-spacer />
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <v-col :cols="'auto'">
+                    <Kawa class="kawa" :table="table" :player_id="player2_id" :rotate180tile="is_player1" />
+                </v-col>
+                <v-col>
+                    <v-spacer />
+                </v-col>
             </v-row>
             <v-row>
-                <v-spacer />
-                <Tsumo class="tsumo" :table="table" :player_id="player_id" :rotate180tile="is_player1" />
-                <v-spacer />
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <v-col :cols="'auto'">
+                    <Tsumo class="tsumo" :table="table" :player_id="player_id" :rotate180tile="is_player1" />
+                </v-col>
+                <v-col>
+                    <v-spacer />
+                </v-col>
             </v-row>
             <v-row>
-                <v-spacer />
-                <Kawa class="kawa" :table="table" :player_id="player1_id" :rotate180tile="!is_player1" />
-                <v-spacer />
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <v-col :cols="'auto'">
+                    <Kawa class="kawa" :table="table" :player_id="player1_id" :rotate180tile="!is_player1" />
+                </v-col>
+                <v-col>
+                    <v-spacer />
+                </v-col>
+            </v-row>
+            <v-row class="opened_tiles_wrap" :class="playerclass">
+                <v-spacer v-if="playerclass === 'player1'" />
+                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles1" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles2" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles3" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles4" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_pe_tiles" :key="index"
+                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
+                    :player_id="player_id" />
+                <v-spacer v-if="playerclass === 'player2'" />
             </v-row>
             <v-row class="hand" :class="playerclass">
-                <v-spacer />
+                <v-col>
+                    <v-spacer />
+                </v-col>
                 <v-row class="handtiles">
+                    <!-- <v-col :cols="'auto'"> -->
                     <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
                         :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
                     <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
                         :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
                         :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" :table="table"
                         :player_id="player_id" />
+                    <!-- </v-col> -->
+                </v-row>
+                <v-col>
+                    <v-spacer />
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container>
+            <v-row class="operators">
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <v-row v-for="(operator, index) in operatorsWithoutDahai" :key="index" class="operator">
+                    <v-col>
+                        <v-card>
+                            {{ operator_type.to_string(operator.OperatorType) }}
+                            <v-container>
+                                <v-row>
+                                    <v-col :cols="'auto'" v-for="(tile, jndex) in operator.TargetTiles" :key="jndex">
+                                        <Tile :suit="tile.Suit" :num="tile.Num" :state="tile_state.OPEN"
+                                            @click="operator_on_click(operator)" :table="table"
+                                            :player_id="player_id" />
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card>
+                    </v-col>
                 </v-row>
                 <v-spacer />
             </v-row>
@@ -94,66 +184,135 @@ export default class Table extends Vue {
 
     table: any = {}
     operators = []
+    operatorsWithoutDahai = []
     player1_hand: any = []
     player1_tsumori_tile: any = {}
+    player1_opened_tiles1: any = []
+    player1_opened_tiles2: any = []
+    player1_opened_tiles3: any = []
+    player1_opened_tiles4: any = []
+    player1_pe_tiles: any = []
     player2_hand: any = []
     player2_tsumori_tile: any = {}
+    player2_opened_tiles1: any = []
+    player2_opened_tiles2: any = []
+    player2_opened_tiles3: any = []
+    player2_opened_tiles4: any = []
+    player2_pe_tiles: any = []
     tsumo: any = []
     player1_id = ""
     player2_id = ""
 
     playerclass = "player1"
+    opponentclass = "player2"
+
+    operator_type = new OperatorType()
+    tile_state = new TileState()
 
     tile_on_click(tile: any): void {
         for (let i = 0; i < this.operators.length; i++) {
             let operator = this.operators[i]
-            if (operator.OperatorType === new OperatorType().OPERATOR_DAHAI) {
+            if (operator.OperatorType === this.operator_type.OPERATOR_DAHAI) {
                 let target_tile = operator.TargetTiles[0]
                 if (tile.Name === target_tile.Name) {
                     this.operators.splice(0)
+                    this.operatorsWithoutDahai.splice(0)
                     api.execute_operator_promise(operator)
                     break
                 }
             }
         }
     }
+    operator_on_click(operator: any) {
+        this.operators.splice(0)
+        this.operatorsWithoutDahai.splice(0)
+        api.execute_operator_promise(operator)
+    }
 
     @Watch('table')
     updateHhand() {
         this.is_player1 = this.table.Player1.ID === this.player_id
         let playerIndex = this.is_player1 ? 1 : 2
-        this.playerclass = playerIndex === 1 ? "player1" : "player2"
+        if (playerIndex === 1) {
+            this.playerclass = "player1"
+            this.opponentclass = "player2"
+        } else {
+            this.playerclass = "player2"
+            this.opponentclass = "player1"
+        }
 
-        this.player1_hand = []
-        this.player2_hand = []
-        this.tsumo = []
+        this.tsumo.splice(0)
+        this.player1_hand.splice(0)
+        this.player1_opened_tiles1.splice(0)
+        this.player1_opened_tiles2.splice(0)
+        this.player1_opened_tiles3.splice(0)
+        this.player1_opened_tiles4.splice(0)
+        this.player1_pe_tiles.splice(0)
+        this.player2_hand.splice(0)
+        this.player2_opened_tiles1.splice(0)
+        this.player2_opened_tiles2.splice(0)
+        this.player2_opened_tiles3.splice(0)
+        this.player2_opened_tiles4.splice(0)
+        this.player2_pe_tiles.splice(0)
+
         if (this.table && this.table.Player1 && this.table.Player1.Hand) {
-            this.table.Player1.Hand.forEach(element => {
+            this.table.Player1.Hand.forEach(tile => {
                 if (playerIndex == 1) {
-                    element.State = new TileState().PLAYER
+                    tile.State = this.tile_state.PLAYER
                 } else {
-                    element.State = new TileState().OPPONENT
+                    tile.State = this.tile_state.OPPONENT
                 }
-                this.player1_hand.push(element)
+                this.player1_hand.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.TsumoriTile) {
             let tile = this.table.Player1.TsumoriTile
             if (playerIndex == 1) {
-                tile.State = new TileState().PLAYER
+                tile.State = this.tile_state.PLAYER
             } else {
-                tile.State = new TileState().OPPONENT
+                tile.State = this.tile_state.OPPONENT
             }
             this.player1_tsumori_tile = tile
         } else {
             this.player1_tsumori_tile = {}
         }
-        if (this.table && this.table.Player1 && this.table.Player1.Hand) {
+        if (this.table && this.table.Player1 && this.table.Player1.OpenedTile1 && this.table.Player1.OpenedTile1.Tiles) {
+            this.table.Player1.OpenedTile1.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player1_opened_tiles1.push(tile)
+            });
+        }
+        if (this.table && this.table.Player1 && this.table.Player1.OpenedTile2 && this.table.Player1.OpenedTile2.Tiles) {
+            this.table.Player1.OpenedTile2.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player1_opened_tiles2.push(tile)
+            });
+        }
+        if (this.table && this.table.Player1 && this.table.Player1.OpenedTile3 && this.table.Player1.OpenedTile3.Tiles) {
+            this.table.Player1.OpenedTile3.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player1_opened_tiles3.push(tile)
+            });
+        }
+        if (this.table && this.table.Player1 && this.table.Player1.OpenedTile4 && this.table.Player1.OpenedTile4.Tiles) {
+            this.table.Player1.OpenedTile4.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player1_opened_tiles4.push(tile)
+            });
+        }
+        if (this.table && this.table.Player1 && this.table.Player1.OpenedPe && this.table.Player1.OpenedPe.Tiles) {
+            this.table.Player1.OpenedPe.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player1_pe_tiles.push(tile)
+            });
+        }
+
+        if (this.table && this.table.Player2 && this.table.Player2.Hand) {
             this.table.Player2.Hand.forEach((tile) => {
                 if (playerIndex == 2) {
-                    tile.State = new TileState().PLAYER
+                    tile.State = this.tile_state.PLAYER
                 } else {
-                    tile.State = new TileState().OPPONENT
+                    tile.State = this.tile_state.OPPONENT
                 }
                 this.player2_hand.push(tile)
             });
@@ -161,20 +320,52 @@ export default class Table extends Vue {
         if (this.table && this.table.Player2 && this.table.Player2.TsumoriTile) {
             let tile = this.table.Player2.TsumoriTile
             if (playerIndex == 2) {
-                tile.State = new TileState().PLAYER
+                tile.State = this.tile_state.PLAYER
             } else {
-                tile.State = new TileState().OPPONENT
+                tile.State = this.tile_state.OPPONENT
             }
             this.player2_tsumori_tile = tile
         } else {
             this.player2_tsumori_tile = {}
         }
+        if (this.table && this.table.Player2 && this.table.Player2.OpenedTile1.Tiles) {
+            this.table.Player2.OpenedTile1.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player2_opened_tiles1.push(tile)
+            });
+        }
+        if (this.table && this.table.Player2 && this.table.Player2.OpenedTile2 && this.table.Player2.OpenedTile2.Tiles) {
+            this.table.Player2.OpenedTile2.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player2_opened_tiles2.push(tile)
+            });
+        }
+        if (this.table && this.table.Player2 && this.table.Player2.OpenedTile3 && this.table.Player2.OpenedTile3.Tiles) {
+            this.table.Player2.OpenedTile3.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player2_opened_tiles3.push(tile)
+            });
+        }
+        if (this.table && this.table.Player2 && this.table.Player2.OpenedTile4 && this.table.Player2.OpenedTile4.Tiles) {
+            this.table.Player2.OpenedTile4.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player2_opened_tiles4.push(tile)
+            });
+        }
+        if (this.table && this.table.Player2 && this.table.Player2.OpenedPe && this.table.Player2.OpenedPe.Tiles) {
+            this.table.Player2.OpenedPe.Tiles.forEach(tile => {
+                tile.State = this.tile_state.OPEN
+                this.player2_pe_tiles.push(tile)
+            });
+        }
+
         if (this.table && this.table.Tsumo && this.table.Tsumo.Tiles) {
             this.table.Tsumo.Tiles.forEach((tile: any) => {
-                tile.State = new TileState().DOWN
+                tile.State = this.tile_state.DOWN
                 this.tsumo.push(tile)
             });
         }
+
         this.player1_id = this.table.Player1.ID
         this.player2_id = this.table.Player2.ID
     }
@@ -201,7 +392,19 @@ export default class Table extends Vue {
 
                 this.operators_socket = api.generate_operators_socket(this.get_room_id(), this.player_id)
                 this.operators_socket.onmessage = (e: MessageEvent) => {
-                    this.operators = JSON.parse(e.data)
+                    this.operators.splice(0);
+                    this.operatorsWithoutDahai.splice(0);
+                    let operators = JSON.parse(e.data)
+                    if (!operators) {
+                        return
+                    }
+                    operators.forEach((operator: any) => {
+                        this.operators.push(operator);
+                        if (operator.OperatorType !== this.operator_type.OPERATOR_DAHAI) {
+                            this.operatorsWithoutDahai.push(operator);
+                        }
+                    });
+                    console.log(this.operatorsWithoutDahai)
                 }
             }).then(() => {
                 this.table_socket = api.generate_list_table_socket()
@@ -215,7 +418,7 @@ export default class Table extends Vue {
                             RoomID: this.get_room_id(),
                             PlayerID: this.player_id,
                             TargetTiles: [],
-                            OperatorType: new OperatorType().OPERATOR_START_GAME
+                            OperatorType: this.operator_type.OPERATOR_START_GAME
                         })
                     }
                 }
@@ -240,8 +443,7 @@ export default class Table extends Vue {
     margin: 10px;
 }
 
-.tsumo {
-}
+.tsumo {}
 
 .kawa {
     margin: 10px;
@@ -250,5 +452,23 @@ export default class Table extends Vue {
 .handtiles {
     height: 60px;
     width: 462px;
+}
+
+.operators {}
+
+.operator {}
+
+.opened_tiles_wrap.player1,
+.opened_tiles_wrap.player2 {
+    height: 60px;
+    min-height: 60px;
+    max-height: 60px;
+    /* width: 462px; */
+    /* min-width: 462px; */
+    /* max-width: 462px; */
+}
+
+.opened_tiles {
+    height: 59px;
 }
 </style>

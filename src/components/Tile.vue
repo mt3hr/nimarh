@@ -1,7 +1,7 @@
 <template>
-    <div class="tile" :class="rotate180class" v-if="filename">
-        <v-img :src="require(`@/assets/${filename}`)" :max-height="height" :max-width="width"/>
-    </div>
+    <span class="tile" :class="rotate180class" v-if="filename">
+        <v-img :src="require(`@/assets/${filename}`)" :height="height" :width="width"/>
+    </span>
 </template>
 
 <script lang="ts">
@@ -127,7 +127,11 @@ export default class Tile extends Vue {
 <style scoped>
 .tile {
     width: 33px;
+    min-width: 33px;
+    max-width: 33px;
     height: 59px;
+    min-height: 59px;
+    max-height: 59px;
 }
 
 .rotate180 {
