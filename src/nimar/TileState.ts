@@ -1,8 +1,9 @@
 export default class TileState {
-    DOWN = 0
-    PLAYER = 1
-    OPPONENT = 2
-    OPEN= 3
-    OPEN_LEFT = 4
-    OPEN_RIGHT = 5
+    NULL = 0
+    DOWN = 1
+    PLAYER = 2
+    OPPONENT = 3
+    OPEN= 4
+    OPEN_LEFT = 5
+    OPEN_RIGHT = 6
 }

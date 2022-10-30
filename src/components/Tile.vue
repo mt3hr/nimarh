@@ -1,6 +1,6 @@
 <template>
     <span class="tile" :class="rotate180class" v-if="filename">
-        <v-img :src="require(`@/assets/${filename}`)" :height="height" :width="width"/>
+        <v-img :src="require(`@/assets/${filename}`)" :height="height" :width="width" />
     </span>
 </template>
 
@@ -12,13 +12,13 @@ import { Prop, Watch } from "vue-property-decorator"
 
 export default class Tile extends Vue {
     @Prop() table: any
-    @Prop() player_id: string
     @Prop() suit: number
     @Prop() num: number
     @Prop() state: number
     @Prop() rotate180: boolean
+    @Prop() reverse: boolean
     filename: string
-    rotate180class = ""
+    rotate180class = "rotate0"
 
     height = 59
     width = 33
@@ -38,13 +38,13 @@ export default class Tile extends Vue {
         this.update_filename()
     }
 
-    @Watch("player_id")
-    update_filename4() {
+    @Watch("rotate180")
+    update_filename5() {
         this.update_filename()
     }
 
-    @Watch("rotate180")
-    update_filename5() {
+    @Watch("reverse")
+    update_filename6() {
         this.update_filename()
     }
 
@@ -53,6 +53,10 @@ export default class Tile extends Vue {
     }
 
     update_filename() {
+        if (this.state == new TileState().NULL) {
+            this.filename = "p_null.gif"
+            return
+        }
         this.rotate180class = this.rotate180 ? "rotate180" : ""
         let filename = ""
         filename += "p_"
@@ -101,7 +105,7 @@ export default class Tile extends Vue {
                 this.filename = filename
                 return
             case new TileState().OPEN:
-                if (!this.rotate180) {
+                if (!this.reverse) {
                     filename += "_1"
                 } else {
                     filename += "_2"
@@ -136,5 +140,7 @@ export default class Tile extends Vue {
 
 .rotate180 {
     transform: rotate(180deg);
+    position: relative;
+    left: -16.5px;
 }
 </style>

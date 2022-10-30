@@ -1,58 +1,47 @@
 <template>
     <div>
-        <v-container :class="playerclass">
-            <v-row class="hand" :class="playerclass">
+        <v-container :class="playerrotateclass">
+            <v-row class="hand" :class="playerrotateclass">
                 <v-col>
                     <v-spacer />
                 </v-col>
                 <!-- <v-col :cols="'auto'"> -->
                 <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                    :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
+                    :state="tile.State" @click="tile_on_click(tile)" :table="table" />
                 <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
                     :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
-                    :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" :table="table"
-                    :player_id="player_id" />
+                    :state="player2_tsumori_tile.State" @click="tile_on_click(player2_tsumori_tile)" :table="table" />
                 <!-- </v-col> -->
                 <v-col>
                     <v-spacer />
                 </v-col>
             </v-row>
-            <v-row class="opened_tiles_wrap" :class="playerclass">
-                <v-spacer v-if="playerclass === 'player2'" />
-                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles1" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles2" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles3" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_opened_tiles4" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="opponentclass" v-for="(tile, index) in player2_pe_tiles" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <v-spacer v-if="playerclass === 'player1'" />
+            <v-row class="opened_tiles_wrap down" :class="playerclass">
+                <v-spacer v-if="playerclass == 'player1'" />
+                <Tile class="tile" v-for="(tile, index) in player2_opened_tiles1" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player1'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player2_opened_tiles2" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player1'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player2_opened_tiles3" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player1'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player2_opened_tiles4" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player1'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player2_pe_tiles" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" :reverse="playerclass == 'player1'" @click="tile_on_click(tile)"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <v-spacer v-if="playerclass == 'player2'" />
             </v-row>
             <v-row>
                 <v-col>
                     <v-spacer />
                 </v-col>
                 <v-col :cols="'auto'">
-                    <Kawa class="kawa" :table="table" :player_id="player2_id" :rotate180tile="is_player1" />
-                </v-col>
-                <v-col>
-                    <v-spacer />
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-spacer />
-                </v-col>
-                <v-col :cols="'auto'">
-                    <Tsumo class="tsumo" :table="table" :player_id="player_id" :rotate180tile="is_player1" />
+                    <Kawa class="kawa" :table="table" :player_id="player2_id" :rotate180tile="playerclass == 'player1'"
+                        :reverse="playerclass == 'player1'" />
                 </v-col>
                 <v-col>
                     <v-spacer />
@@ -63,43 +52,55 @@
                     <v-spacer />
                 </v-col>
                 <v-col :cols="'auto'">
-                    <Kawa class="kawa" :table="table" :player_id="player1_id" :rotate180tile="!is_player1" />
+                    <Tsumo class="tsumo" :table="table" :player_id="player_id" />
                 </v-col>
                 <v-col>
                     <v-spacer />
                 </v-col>
             </v-row>
-            <v-row class="opened_tiles_wrap" :class="playerclass">
-                <v-spacer v-if="playerclass === 'player1'" />
-                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles1" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles2" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles3" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_opened_tiles4" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <Tile class="tile" :class="playerclass" v-for="(tile, index) in player1_pe_tiles" :key="index"
-                    :suit="tile.Suit" :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :table="table"
-                    :player_id="player_id" />
-                <v-spacer v-if="playerclass === 'player2'" />
+            <v-row>
+                <v-col>
+                    <v-spacer />
+                </v-col>
+                <v-col :cols="'auto'">
+                    <Kawa class="kawa" :table="table" :player_id="player1_id" :rotate180tile="playerclass == 'player2'"
+                        :reverse="playerclass == 'player2'" />
+                </v-col>
+                <v-col>
+                    <v-spacer />
+                </v-col>
             </v-row>
-            <v-row class="hand" :class="playerclass">
+            <v-row class="opened_tiles_wrap up" :class="playerclass">
+                <v-spacer v-if="playerclass == 'player2'" />
+                <Tile class="tile" v-for="(tile, index) in player1_opened_tiles1" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player2'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player1_opened_tiles2" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player2'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player1_opened_tiles3" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player2'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player1_opened_tiles4" :key="index" :suit="tile.Suit"
+                    :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player2'"
+                    :rotate180="playerclass == 'player2'" :table="table" />
+                <Tile class="tile" v-for="(tile, index) in player1_pe_tiles" :key="index"
+                    :reverse="playerclass == 'player2'" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
+                    :rotate180="playerclass == 'player2'" @click="tile_on_click(tile)" :table="table" />
+                <v-spacer v-if="playerclass == 'player1'" />
+            </v-row>
+            <v-row class="hand" :class="playerrotateclass">
                 <v-col>
                     <v-spacer />
                 </v-col>
                 <v-row class="handtiles">
                     <!-- <v-col :cols="'auto'"> -->
                     <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
-                        :state="tile.State" @click="tile_on_click(tile)" :table="table" :player_id="player_id" />
+                        :state="tile.State" @click="tile_on_click(tile)" :table="table" />
                     <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
                         :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
-                        :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)" :table="table"
-                        :player_id="player_id" />
+                        :state="player1_tsumori_tile.State" @click="tile_on_click(player1_tsumori_tile)"
+                        :table="table" />
                     <!-- </v-col> -->
                 </v-row>
                 <v-col>
@@ -120,8 +121,7 @@
                                 <v-row>
                                     <v-col :cols="'auto'" v-for="(tile, jndex) in operator.TargetTiles" :key="jndex">
                                         <Tile :suit="tile.Suit" :num="tile.Num" :state="tile_state.OPEN"
-                                            @click="operator_on_click(operator)" :table="table"
-                                            :player_id="player_id" />
+                                            @click="operator_on_click(operator)" :table="table" />
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -203,8 +203,8 @@ export default class Table extends Vue {
     player1_id = ""
     player2_id = ""
 
+    playerrotateclass = "player1_rotate"
     playerclass = "player1"
-    opponentclass = "player2"
 
     operator_type = new OperatorType()
     tile_state = new TileState()
@@ -230,15 +230,15 @@ export default class Table extends Vue {
     }
 
     @Watch('table')
-    updateHhand() {
+    updateTable() {
         this.is_player1 = this.table.Player1.ID === this.player_id
         let playerIndex = this.is_player1 ? 1 : 2
         if (playerIndex === 1) {
+            this.playerrotateclass = "player1_rotate"
             this.playerclass = "player1"
-            this.opponentclass = "player2"
         } else {
+            this.playerrotateclass = "player2_rotate"
             this.playerclass = "player2"
-            this.opponentclass = "player1"
         }
 
         this.tsumo.splice(0)
@@ -361,6 +361,16 @@ export default class Table extends Vue {
 
         if (this.table && this.table.Tsumo && this.table.Tsumo.Tiles) {
             this.table.Tsumo.Tiles.forEach((tile: any) => {
+                if (!tile) {
+                    tile = {}
+                    tile.Akadora = false
+                    tile.Dora = false
+                    tile.ID = -1
+                    tile.Name = "null"
+                    tile.Num = -1
+                    tile.State = this.tile_state.NULL
+                    tile.Suit = -1
+                }
                 tile.State = this.tile_state.DOWN
                 this.tsumo.push(tile)
             });
@@ -432,9 +442,9 @@ export default class Table extends Vue {
 </script>
 
 <style scoped>
-.player1 {}
+.player1_rotate {}
 
-.player2 {
+.player2_rotate {
     transform: rotate(180deg);
 }
 
@@ -458,15 +468,31 @@ export default class Table extends Vue {
 
 .operator {}
 
-.opened_tiles_wrap.player1,
-.opened_tiles_wrap.player2 {
+.opened_tiles_wrap {
     height: 60px;
     min-height: 60px;
     max-height: 60px;
-    /* width: 462px; */
-    /* min-width: 462px; */
-    /* max-width: 462px; */
+    width: 462px;
+    min-width: 462px;
+    max-width: 462px;
 }
+
+.opened_tiles_wrap.player2.down,
+.opened_tiles_wrap.player1.up {
+    position: relative;
+    left: 231px;
+    left: 198px;
+    left: 181.5px;
+}
+
+.opened_tiles_wrap.player1.down,
+.opened_tiles_wrap.player2.up {
+    position: relative;
+    left: 231px;
+    left: 198px;
+    left: 181.5px;
+}
+
 
 .opened_tiles {
     height: 59px;

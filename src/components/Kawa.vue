@@ -2,15 +2,15 @@
     <v-container class="kawa" :class="playerclass">
         <v-row class="kawatiles">
             <Tile v-for="(tile, index) in tiles1" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :table="table" :player_id="player_id" :rotate180="rotate180tile" />
+                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
         <v-row class="kawatiles">
             <Tile v-for="(tile, index) in tiles2" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :table="table" :player_id="player_id" :rotate180="rotate180tile" />
+                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
         <v-row class="kawatiles">
             <Tile v-for="(tile, index) in tiles3" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :table="table" :player_id="player_id" :rotate180="rotate180tile" />
+                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
     </v-container>
 </template>
@@ -29,6 +29,7 @@ import Tile from './Tile.vue';
 export default class Kawa extends Vue {
     @Prop() table: any
     @Prop() player_id: string
+    @Prop() reversetile: boolean
     @Prop() rotate180tile: boolean
     playerclass = "player1"
 
