@@ -1,20 +1,37 @@
 <template>
-    <v-container class="tsumo pa-0">
-        <v-row class="tsumotiles" :class="tiles1upclass">
-            <Tile :class="tile1upclass" v-for="(tile, index) in tiles1up" :key="index" :suit="tile.Suit" :num="tile.Num"
-                :state="tile.State" :table="table" />
+    <v-container class="tsumo no-gutters ma-0 pa-0">
+        <v-row class="tiles1 ma-0 pa-0">
+            <v-col :cols="'auto'" class="pa-0 ma-0">
+                <v-row class="tsumotiles pa-0 ma-0" :class="tiles1upclass">
+                    <v-col :cols="'auto'" class="ma-0 pa-0">
+                        <Tile :class="tile1upclass" v-for="(tile, index) in tiles1up" :key="index" :suit="tile.Suit"
+                            :num="tile.Num" :state="tile.State" :table="table" />
+                    </v-col>
+                </v-row>
+                <v-row class="tsumotiles pa-0 ma-0" :class="tiles1downclass">
+                    <v-col :cols="'auto'" class="ma-0 pa-0">
+                        <Tile :class="tile1downclass" v-for="(tile, index) in tiles1down" :key="index" :suit="tile.Suit"
+                            :num="tile.Num" :state="tile.State" :table="table" />
+                    </v-col>
+                </v-row>
+            </v-col>
         </v-row>
-        <v-row class="tsumotiles" :class="tiles1downclass">
-            <Tile :class="tile1downclass" v-for="(tile, index) in tiles1down" :key="index" :suit="tile.Suit"
-                :num="tile.Num" :state="tile.State" :table="table" />
-        </v-row>
-        <v-row class="tsumotiles" :class="tiles2upclass">
-            <Tile :class="tile2upclass" v-for="(tile, index) in tiles2up" :key="index" :suit="tile.Suit" :num="tile.Num"
-                :state="tile.State" :table="table" />
-        </v-row>
-        <v-row class="tsumotiles" :class="tiles2downclass">
-            <Tile :class="tile2downclass" v-for="(tile, index) in tiles2down" :key="index" :suit="tile.Suit"
-                :num="tile.Num" :state="tile.State" :table="table" />
+
+        <v-row class="tiles2 ma-0 pa-0">
+            <v-col :cols="'auto'" class="pa-0 ma-0">
+                <v-row class="tsumotiles pa-0 ma-0" :class="tiles2upclass">
+                    <v-col :cols="'auto'" class="ma-0 pa-0">
+                        <Tile :class="tile2upclass" v-for="(tile, index) in tiles2up" :key="index" :suit="tile.Suit"
+                            :num="tile.Num" :state="tile.State" :table="table" />
+                    </v-col>
+                </v-row>
+                <v-row class="tsumotiles pa-0 ma-0" :class="tiles2downclass">
+                    <v-col :cols="'auto'" class="ma-0 pa-0">
+                        <Tile :class="tile2downclass" v-for="(tile, index) in tiles2down" :key="index" :suit="tile.Suit"
+                            :num="tile.Num" :state="tile.State" :table="table" />
+                    </v-col>
+                </v-row>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -65,16 +82,13 @@ export default class Tsumo extends Vue {
         this.tile2upclass = playerIndex == 1 ? "tile2upforplayer1" : "tile2upforplayer2"
         this.tile2downclass = playerIndex == 1 ? "tile2downforplayer1" : "tile2downforplayer2"
 
-
-
         this.tiles1up.splice(0)
         this.tiles1down.splice(0)
         this.tiles2up.splice(0)
         this.tiles2down.splice(0)
         let nullCnt = 80 - this.table.Tsumo.Tiles.length
         let i = 0
-        console.log(nullCnt)
-        for (i = 0; i < nullCnt; i++) {
+        for (; i < nullCnt; i++) {
             let tile: any
             tile = {}
             tile.Akadora = false
@@ -134,7 +148,6 @@ export default class Tsumo extends Vue {
 </script>
 
 <style scoped>
-
 .rotate180 {
     rotate: 180deg;
 }
@@ -147,7 +160,7 @@ export default class Tsumo extends Vue {
 
 .tiles1downforplayer1 {
     position: relative;
-    top: -35px;
+    top: -40px;
     z-index: 1;
 }
 
@@ -159,31 +172,31 @@ export default class Tsumo extends Vue {
 
 .tiles2downforplayer1 {
     position: relative;
-    top: -35px;
+    top: -40px;
     z-index: 1;
 }
 
 .tiles1upforplayer2 {
     position: relative;
-    top: 35px;
+    top: 40px;
     z-index: 2;
 }
 
 .tiles1downforplayer2 {
     position: relative;
-    top: -35px;
+    top: -40px;
     z-index: 1;
 }
 
 .tiles2upforplayer2 {
     position: relative;
-    top: 35px;
+    top: 40px;
     z-index: 2;
 }
 
 .tiles2downforplayer2 {
     position: relative;
-    top: -35px;
+    top: -40px;
     z-index: 1;
 }
 
@@ -195,11 +208,9 @@ export default class Tsumo extends Vue {
     rotate: 0deg;
 }
 
-.tile2upforplayer1 {
-}
+.tile2upforplayer1 {}
 
-.tile2downforplayer1 {
-}
+.tile2downforplayer1 {}
 
 .tile1upforplayer2 {
     rotate: 180deg;
@@ -218,10 +229,32 @@ export default class Tsumo extends Vue {
 }
 
 .tsumo {
-    width: 693px;
+    z-index: 10;
+    width: 660px;
+    height: 150px;
+    position: relative;
+    top: -40px;
 }
 
 .tsumotiles {
     height: 60px;
+    max-height: 60px;
+    min-height: 60px;
+}
+
+.tiles1 {
+    width: 660px;
+    max-width: 660px;
+    min-width: 660px;
+    position:relative;
+    bottom: -20px;
+}
+
+.tiles2 {
+    width: 660px;
+    max-width: 660px;
+    min-width: 660px;
+    position:relative;
+    top: -20px;
 }
 </style>

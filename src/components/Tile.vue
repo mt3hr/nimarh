@@ -1,7 +1,7 @@
 <template>
-    <span class="tile" :class="rotate180class" v-if="filename">
+    <div class="tile" :class="rotate180class" v-if="filename">
         <v-img :src="require(`@/assets/${filename}`)" :height="height" :width="width" />
-    </span>
+    </div>
 </template>
 
 <script lang="ts">
@@ -15,8 +15,8 @@ export default class Tile extends Vue {
     @Prop() suit: number
     @Prop() num: number
     @Prop() state: number
-    @Prop() rotate180: boolean
-    @Prop() reverse: boolean
+    @Prop({default: false}) rotate180: boolean
+    @Prop({default: false}) reverse: boolean
     filename: string
     rotate180class = "rotate0"
 
@@ -57,7 +57,7 @@ export default class Tile extends Vue {
             this.filename = "p_null.gif"
             return
         }
-        this.rotate180class = this.rotate180 ? "rotate180" : ""
+        this.rotate180class = this.rotate180 ? "rotate180" : "rotate0"
         let filename = ""
         filename += "p_"
 
@@ -105,10 +105,11 @@ export default class Tile extends Vue {
                 this.filename = filename
                 return
             case new TileState().OPEN:
-                if (!this.reverse) {
-                    filename += "_1"
-                } else {
+                console.log(this.reverse)
+                if (this.reverse) {
                     filename += "_2"
+                } else {
+                    filename += "_1"
                 }
                 break
             case new TileState().OPEN_LEFT:
@@ -136,11 +137,13 @@ export default class Tile extends Vue {
     height: 59px;
     min-height: 59px;
     max-height: 59px;
+    display: inline-block;
 }
 
 .rotate180 {
-    transform: rotate(180deg);
-    position: relative;
-    left: -16.5px;
+    rotate: 180deg;
+}
+.rotate0 {
+    rotate: 0deg;
 }
 </style>

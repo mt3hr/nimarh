@@ -1,16 +1,16 @@
 <template>
-    <v-container class="kawa" :class="playerclass">
-        <v-row class="kawatiles">
+    <v-container class="kawa pa-0 ma-0" :class="playerclass">
+        <v-row class="kawatiles kawa1 ma-0 pa-0">
             <Tile v-for="(tile, index) in tiles1" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
+                :class="kawa1class" :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
-        <v-row class="kawatiles">
+        <v-row class="kawatiles kawa2 ma-0 pa-0">
             <Tile v-for="(tile, index) in tiles2" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
+                :class="kawa2class" :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
-        <v-row class="kawatiles">
+        <v-row class="kawatiles kawa3 ma-0 pa-0">
             <Tile v-for="(tile, index) in tiles3" :key="index" :suit="tile.Suit" :num="tile.Num" :state="tile.State"
-                :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
+                :class="kawa3class" :rotate180="rotate180tile" :reverse="reversetile" :table="table" />
         </v-row>
     </v-container>
 </template>
@@ -28,24 +28,45 @@ import Tile from './Tile.vue';
 })
 export default class Kawa extends Vue {
     @Prop() table: any
+    @Prop() kawa_player_id: string
     @Prop() player_id: string
     @Prop() reversetile: boolean
     @Prop() rotate180tile: boolean
     playerclass = "player1"
+    kawa1class = "up"
+    kawa2class = "center"
+    kawa3class = "down"
 
     tiles1 = []
     tiles2 = []
     tiles3 = []
 
     @Watch("table")
+    callUpdateTiles1() {
+        this.updateTiles()
+    }
+
+    @Watch("player_id")
+    callUpdateTiles2() {
+        this.updateTiles()
+    }
+
+    @Watch("kawa_player_id")
+    callUpdateTiles3() {
+        this.updateTiles()
+    }
+
     updateTiles() {
-        this.playerclass = this.table.Player1.ID === this.player_id ? "player1" : "player2"
+        this.playerclass = this.table.Player1.ID == this.kawa_player_id ? "player1" : "player2"
 
         this.tiles1.splice(0)
         this.tiles2.splice(0)
         this.tiles3.splice(0)
 
-        let tiles = this.player_id === this.table.Player1.ID ? this.table.Player1.Kawa : this.table.Player2.Kawa
+        let tiles = this.kawa_player_id == this.table.Player1.ID ? this.table.Player1.Kawa : this.table.Player2.Kawa
+        this.kawa1class = this.kawa_player_id == this.table.Player1.ID ? "up" : "down"
+        this.kawa2class = "center"
+        this.kawa1class = this.kawa_player_id == this.table.Player1.ID ? "down" : "up"
         if (tiles) {
             for (let i = 0; i < tiles.length; i++) {
                 let tile = tiles[i]
@@ -64,10 +85,11 @@ export default class Kawa extends Vue {
 </script>
 
 <style scoped>
-.player1 {}
+.player1 {
+}
 
 .player2 {
-    transform: rotate(180deg);
+    rotate: 180deg;
 }
 
 .kawatiles {
@@ -75,7 +97,34 @@ export default class Kawa extends Vue {
 }
 
 .kawa {
-    height: 180px;
+    height: 160px;
     width: 231px;
 }
+
+.up {
+    z-index: 11;
+}
+
+.center {
+    z-index: 12;
+}
+
+.down {
+    z-index: 13;
+}
+
+.kawa1 {
+    position: relative;
+    top: 0px;
+}
+
+.kawa2 {
+    position: relative;
+    top: -10px;
+}
+.kawa3 {
+    position: relative;
+    top: -20px;
+}
+
 </style>
