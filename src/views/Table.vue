@@ -16,7 +16,7 @@
                     <v-spacer />
                 </v-col>
             </v-row>
-            <v-row class="opened_tiles_wrap down" :class="playerclass">
+            <v-row class="opened_tiles_wrap down" :class="[playerclass, flexreverse]">
                 <v-spacer v-if="playerclass == 'player1'" />
                 <Tile class="tile" v-for="(tile, index) in player2_opened_tiles1" :key="index" :suit="tile.Suit"
                     :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player1'"
@@ -70,7 +70,7 @@
                     <v-spacer />
                 </v-col>
             </v-row>
-            <v-row class="opened_tiles_wrap up" :class="playerclass">
+            <v-row class="opened_tiles_wrap up" :class="[playerclass, flexreverse]">
                 <v-spacer v-if="playerclass == 'player2'" />
                 <Tile class="tile" v-for="(tile, index) in player1_opened_tiles1" :key="index" :suit="tile.Suit"
                     :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="playerclass == 'player2'"
@@ -205,6 +205,7 @@ export default class Table extends Vue {
 
     playerrotateclass = "player1_rotate"
     playerclass = "player1"
+    flexreverse = ""
 
     operator_type = new OperatorType()
     tile_state = new TileState()
@@ -236,9 +237,11 @@ export default class Table extends Vue {
         if (playerIndex === 1) {
             this.playerrotateclass = "player1_rotate"
             this.playerclass = "player1"
+            this.flexreverse = "flex-row-reverse"
         } else {
             this.playerrotateclass = "player2_rotate"
             this.playerclass = "player2"
+            this.flexreverse = ""
         }
 
         this.tsumo.splice(0)
@@ -461,7 +464,11 @@ export default class Table extends Vue {
 
 .handtiles {
     height: 60px;
+    min-height: 60px;
+    max-height: 60px;
     width: 462px;
+    min-width: 462px;
+    max-width: 462px;
 }
 
 .operators {}
@@ -481,16 +488,16 @@ export default class Table extends Vue {
 .opened_tiles_wrap.player1.up {
     position: relative;
     left: 231px;
-    left: 198px;
-    left: 181.5px;
+    /* left: 198px; */
+    /* left: 181.5px; */
 }
 
 .opened_tiles_wrap.player1.down,
 .opened_tiles_wrap.player2.up {
     position: relative;
     left: 231px;
-    left: 198px;
-    left: 181.5px;
+    /* left: 198px; */
+    /* left: 181.5px; */
 }
 
 
