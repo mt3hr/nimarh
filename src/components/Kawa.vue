@@ -64,9 +64,27 @@ export default class Kawa extends Vue {
         this.tiles3.splice(0)
 
         let tiles = this.kawa_player_id == this.table.Player1.ID ? this.table.Player1.Kawa : this.table.Player2.Kawa
-        this.kawa1class = this.kawa_player_id == this.table.Player1.ID ? "up" : "down"
-        this.kawa2class = "center"
-        this.kawa1class = this.kawa_player_id == this.table.Player1.ID ? "down" : "up"
+        if (this.kawa_player_id == this.table.Player1.ID) {
+           if (this.player_id == this.table.Player1.ID) {
+                this.kawa1class = "up"
+                this.kawa2class = "center"
+                this.kawa3class = "down"
+            } else {
+                this.kawa1class = "down"
+                this.kawa2class = "center"
+                this.kawa3class = "up"
+            }
+        } else {
+           if (this.player_id == this.table.Player1.ID) {
+                this.kawa1class = "down"
+                this.kawa2class = "center"
+                this.kawa3class = "up"
+            } else {
+                this.kawa1class = "up"
+                this.kawa2class = "center"
+                this.kawa3class = "down"
+            }
+        }
         if (tiles) {
             for (let i = 0; i < tiles.length; i++) {
                 let tile = tiles[i]
@@ -85,8 +103,7 @@ export default class Kawa extends Vue {
 </script>
 
 <style scoped>
-.player1 {
-}
+.player1 {}
 
 .player2 {
     rotate: 180deg;
@@ -94,11 +111,12 @@ export default class Kawa extends Vue {
 
 .kawatiles {
     height: 60px;
+    width: 198px;
 }
 
 .kawa {
     height: 160px;
-    width: 231px;
+    width: 198px;
 }
 
 .up {
@@ -122,9 +140,9 @@ export default class Kawa extends Vue {
     position: relative;
     top: -10px;
 }
+
 .kawa3 {
     position: relative;
     top: -20px;
 }
-
 </style>

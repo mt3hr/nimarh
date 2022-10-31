@@ -1,6 +1,6 @@
 <template>
     <div class="tile" :class="rotate180class" v-if="filename">
-        <v-img :src="require(`@/assets/${filename}`)" :height="height" :width="width" />
+        <img :src="require(`@/assets/${filename}`)" :height="height" :width="width" />
     </div>
 </template>
 
@@ -10,13 +10,22 @@ import TileState from '@/nimar/TileState';
 import { Vue } from 'vue-class-component';
 import { Prop, Watch } from "vue-property-decorator"
 
+export const NullTile = {
+    Akadora: false,
+    Dora: false,
+    ID: -1,
+    Name: "null",
+    Num: -1,
+    State: new TileState().NULL,
+    Suit: -1,
+}
 export default class Tile extends Vue {
     @Prop() table: any
     @Prop() suit: number
     @Prop() num: number
     @Prop() state: number
-    @Prop({default: false}) rotate180: boolean
-    @Prop({default: false}) reverse: boolean
+    @Prop({ default: false }) rotate180: boolean
+    @Prop({ default: false }) reverse: boolean
     filename: string
     rotate180class = "rotate0"
 
@@ -143,6 +152,7 @@ export default class Tile extends Vue {
 .rotate180 {
     rotate: 180deg;
 }
+
 .rotate0 {
     rotate: 0deg;
 }

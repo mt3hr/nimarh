@@ -37,10 +37,9 @@
 </template>
 
 <script lang="ts">
-import TileState from '@/nimar/TileState';
 import { Options, Vue } from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
-import Tile from './Tile.vue';
+import Tile, { NullTile } from './Tile.vue';
 
 
 @Options({
@@ -89,16 +88,7 @@ export default class Tsumo extends Vue {
         let nullCnt = 80 - this.table.Tsumo.Tiles.length
         let i = 0
         for (; i < nullCnt; i++) {
-            let tile: any
-            tile = {}
-            tile.Akadora = false
-            tile.Dora = false
-            tile.ID = -1
-            tile.Name = "null"
-            tile.Num = -1
-            tile.State = new TileState().NULL
-            tile.Suit = -1
-
+            let tile: any = NullTile
             if (i < 40) {
                 if (i % 2 == 0) {
                     this.tiles1up.push(tile)
@@ -117,14 +107,7 @@ export default class Tsumo extends Vue {
             let tile: any
             let index = i - nullCnt
             if (!this.table.Tsumo.Tiles[index]) {
-                tile = {}
-                tile.Akadora = false
-                tile.Dora = false
-                tile.ID = -1
-                tile.Name = "null"
-                tile.Num = -1
-                tile.State = new TileState().NULL
-                tile.Suit = -1
+                tile = NullTile
             } else {
                 tile = this.table.Tsumo.Tiles[index]
             }
@@ -229,7 +212,7 @@ export default class Tsumo extends Vue {
 }
 
 .tsumo {
-    z-index: 10;
+    z-index: 20;
     width: 660px;
     height: 150px;
     position: relative;
