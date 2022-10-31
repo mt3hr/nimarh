@@ -21,9 +21,10 @@ export const NullTile = {
 }
 export default class Tile extends Vue {
     @Prop() table: any
-    @Prop() suit: number
-    @Prop() num: number
-    @Prop() state: number
+    @Prop({default: NullTile.Suit}) suit: number
+    @Prop({default: NullTile.Name}) name: string
+    @Prop({default: NullTile.Num}) num: number
+    @Prop({default: NullTile.State}) state: number
     @Prop({ default: false }) rotate180: boolean
     @Prop({ default: false }) reverse: boolean
     filename: string

@@ -8,7 +8,7 @@
                 <v-col :cols="'auto'" class="handtiles ma-0 pa-0">
                     <Tile v-if="is_player1 && !player2_tsumori_tile.Name" :suit="nulltile.Suit" :num="nulltile.Num"
                         :state="nulltile.State" :table="table" />
-                    <Tile v-for="(tile, index) in player2_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
+                    <Tile v-for="(tile) in player2_hand" :key="tile.Name" :suit="tile.Suit" :num="tile.Num"
                         :state="tile.State" @click="tile_on_click(tile)" :table="table" />
                     <Tile v-if="player2_tsumori_tile.Name" :key="player2_tsumori_tile.Name"
                         :suit="player2_tsumori_tile.Suit" :num="player2_tsumori_tile.Num"
@@ -19,26 +19,27 @@
                 </v-col>
                 <v-spacer />
             </v-row>
-            <v-row :align-content="'center'" class="opened_tiles_wrap down pa-0 ma-0" :class="[playerclass, flexreverse]">
-                <v-spacer/>
+            <v-row :align-content="'center'" class="opened_tiles_wrap down pa-0 ma-0"
+                :class="[playerclass, flexreverse]">
+                <v-spacer />
                 <v-col :cols="'auto'" class="ma-0 pa-0 opened_tiles down" :class="playerclass">
-                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles1" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player2_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles2" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player2_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles3" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player2_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles4" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player2_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player2_pe_tiles" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player2_pe_tiles" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" :reverse="is_player1" @click="tile_on_click(tile)"
                         :rotate180="!is_player1" :table="table" />
                 </v-col>
-                <v-spacer/>
+                <v-spacer />
             </v-row>
             <v-row class="pa-0 ma-0">
                 <v-spacer />
@@ -64,32 +65,32 @@
                 <v-spacer />
             </v-row>
             <v-row :align-content="'center'" class="opened_tiles_wrap up pa-0 ma-0" :class="[playerclass, flexreverse]">
-                <v-spacer/>
+                <v-spacer />
                 <v-col :cols="'auto'" class="ma-0 pa-0 opened_tiles up" :class="playerclass">
-                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles1" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player1_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles2" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player1_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles3" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player1_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles4" :key="index" :suit="tile.Suit"
+                    <Tile class="tile" v-for="(tile) in player1_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
                         :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile, index) in player1_pe_tiles" :key="index" :reverse="!is_player1"
+                    <Tile class="tile" v-for="(tile) in player1_pe_tiles" :key="tile.Name" :reverse="!is_player1"
                         :suit="tile.Suit" :num="tile.Num" :state="tile.State" :rotate180="!is_player1"
                         @click="tile_on_click(tile)" :table="table" />
                 </v-col>
-                <v-spacer/>
+                <v-spacer />
             </v-row>
             <v-row class="hand pa-0 ma-0" :class="playerrotateclass">
                 <v-spacer />
                 <v-col :cols="'auto'" class="handtiles ma-0 pa-0">
                     <Tile v-if="!is_player1 && !player1_tsumori_tile.Name" :suit="nulltile.Suit" :num="nulltile.Num"
                         :state="nulltile.State" :table="table" />
-                    <Tile v-for="(tile, index) in player1_hand" :key="index" :suit="tile.Suit" :num="tile.Num"
+                    <Tile v-for="(tile) in player1_hand" :key="tile.Name" :suit="tile.Suit" :num="tile.Num"
                         :state="tile.State" @click="tile_on_click(tile)" :table="table" />
                     <Tile v-if="player1_tsumori_tile.Name" :key="player1_tsumori_tile.Name"
                         :suit="player1_tsumori_tile.Suit" :num="player1_tsumori_tile.Num"
@@ -102,8 +103,8 @@
             </v-row>
             <v-spacer />
         </v-container>
-        <v-container>
-            <v-row class="operators">
+        <v-container class="operators">
+            <v-row>
                 <v-col>
                     <v-spacer />
                 </v-col>
@@ -156,6 +157,7 @@ import { Vue, Options } from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import Tile, { NullTile } from '../components/Tile.vue'
 import { isPlaceholder } from '@babel/types';
+import { watch } from 'vue';
 
 @Options({
     components: {
@@ -254,7 +256,10 @@ export default class Table extends Vue {
         this.player2_pe_tiles.splice(0)
 
         if (this.table && this.table.Player1 && this.table.Player1.Hand) {
-            this.table.Player1.Hand.forEach(tile => {
+            this.table.Player1.Hand.forEach((tile: any) => {
+                if (!tile) {
+                    return
+                }
                 if (this.is_player1) {
                     tile.State = this.tile_state.PLAYER
                 } else {
@@ -275,38 +280,41 @@ export default class Table extends Vue {
             this.player1_tsumori_tile = {}
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile1 && this.table.Player1.OpenedTile1.Tiles) {
-            this.table.Player1.OpenedTile1.Tiles.forEach(tile => {
+            this.table.Player1.OpenedTile1.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player1_opened_tiles1.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile2 && this.table.Player1.OpenedTile2.Tiles) {
-            this.table.Player1.OpenedTile2.Tiles.forEach(tile => {
+            this.table.Player1.OpenedTile2.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player1_opened_tiles2.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile3 && this.table.Player1.OpenedTile3.Tiles) {
-            this.table.Player1.OpenedTile3.Tiles.forEach(tile => {
+            this.table.Player1.OpenedTile3.Tiles.forEach((tile:any) => {
                 tile.State = this.tile_state.OPEN
                 this.player1_opened_tiles3.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile4 && this.table.Player1.OpenedTile4.Tiles) {
-            this.table.Player1.OpenedTile4.Tiles.forEach(tile => {
+            this.table.Player1.OpenedTile4.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player1_opened_tiles4.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedPe && this.table.Player1.OpenedPe.Tiles) {
-            this.table.Player1.OpenedPe.Tiles.forEach(tile => {
+            this.table.Player1.OpenedPe.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player1_pe_tiles.push(tile)
             });
         }
 
         if (this.table && this.table.Player2 && this.table.Player2.Hand) {
-            this.table.Player2.Hand.forEach((tile) => {
+            this.table.Player2.Hand.forEach((tile: any) => {
+                if (!tile) {
+                    return
+                }
                 if (!this.is_player1) {
                     tile.State = this.tile_state.PLAYER
                 } else {
@@ -327,31 +335,31 @@ export default class Table extends Vue {
             this.player2_tsumori_tile = {}
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile1.Tiles) {
-            this.table.Player2.OpenedTile1.Tiles.forEach(tile => {
+            this.table.Player2.OpenedTile1.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player2_opened_tiles1.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile2 && this.table.Player2.OpenedTile2.Tiles) {
-            this.table.Player2.OpenedTile2.Tiles.forEach(tile => {
+            this.table.Player2.OpenedTile2.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player2_opened_tiles2.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile3 && this.table.Player2.OpenedTile3.Tiles) {
-            this.table.Player2.OpenedTile3.Tiles.forEach(tile => {
+            this.table.Player2.OpenedTile3.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player2_opened_tiles3.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile4 && this.table.Player2.OpenedTile4.Tiles) {
-            this.table.Player2.OpenedTile4.Tiles.forEach(tile => {
+            this.table.Player2.OpenedTile4.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player2_opened_tiles4.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedPe && this.table.Player2.OpenedPe.Tiles) {
-            this.table.Player2.OpenedPe.Tiles.forEach(tile => {
+            this.table.Player2.OpenedPe.Tiles.forEach((tile: any) => {
                 tile.State = this.tile_state.OPEN
                 this.player2_pe_tiles.push(tile)
             });
