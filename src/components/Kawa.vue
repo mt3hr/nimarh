@@ -88,7 +88,7 @@ export default class Kawa extends Vue {
         if (tiles) {
             for (let i = 0; i < tiles.length; i++) {
                 let tile = tiles[i]
-                tile.State = new TileState().OPEN
+                tile.State = TileState.OPEN
                 if (i < 6) {
                     this.tiles1.push(tile)
                 } else if (i < 12) {

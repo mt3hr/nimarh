@@ -111,11 +111,11 @@
                 <v-row v-for="(operator, index) in operatorsWithoutDahai" :key="index" class="operator">
                     <v-col>
                         <v-card @click="operator_on_click(operator)">
-                            {{ operator_type.to_string(operator.OperatorType) }}
+                            {{ operatorTypeToString.to_string(operator.OperatorType) }}
                             <v-container>
                                 <v-row>
                                     <v-col :cols="'auto'" v-for="(tile, jndex) in operator.TargetTiles" :key="jndex">
-                                        <Tile :suit="tile.Suit" :num="tile.Num" :state="tile_state.OPEN"
+                                        <Tile :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN"
                                             :table="table" />
                                     </v-col>
                                 </v-row>
@@ -151,7 +151,7 @@
 import api from '@/api';
 import Tsumo from '@/components/Tsumo.vue';
 import Kawa from '@/components/Kawa.vue';
-import OperatorType from '@/nimar/OperatorType';
+import OperatorType, { OperatorTypeToString } from '@/nimar/OperatorType';
 import TileState from '@/nimar/TileState';
 import { Vue, Options } from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
@@ -204,14 +204,14 @@ export default class Table extends Vue {
     playerclass = "player1"
     flexreverse = ""
 
-    operator_type = new OperatorType()
-    tile_state = new TileState()
     nulltile = NullTile
+    operatorTypeToString = new OperatorTypeToString()
+    TileState = TileState
 
     tile_on_click(tile: any): void {
         for (let i = 0; i < this.operators.length; i++) {
             let operator = this.operators[i]
-            if (operator.OperatorType == this.operator_type.OPERATOR_DAHAI) {
+            if (operator.OperatorType == OperatorType.OPERATOR_DAHAI) {
                 let target_tile = operator.TargetTiles[0]
                 if (tile.Name == target_tile.Name) {
                     this.operators.splice(0)
@@ -261,9 +261,9 @@ export default class Table extends Vue {
                     return
                 }
                 if (this.is_player1) {
-                    tile.State = this.tile_state.PLAYER
+                    tile.State = TileState.PLAYER
                 } else {
-                    tile.State = this.tile_state.OPPONENT
+                    tile.State = TileState.OPPONENT
                 }
                 this.player1_hand.push(tile)
             });
@@ -271,9 +271,9 @@ export default class Table extends Vue {
         if (this.table && this.table.Player1 && this.table.Player1.TsumoriTile) {
             let tile = this.table.Player1.TsumoriTile
             if (this.is_player1) {
-                tile.State = this.tile_state.PLAYER
+                tile.State = TileState.PLAYER
             } else {
-                tile.State = this.tile_state.OPPONENT
+                tile.State = TileState.OPPONENT
             }
             this.player1_tsumori_tile = tile
         } else {
@@ -281,31 +281,31 @@ export default class Table extends Vue {
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile1 && this.table.Player1.OpenedTile1.Tiles) {
             this.table.Player1.OpenedTile1.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player1_opened_tiles1.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile2 && this.table.Player1.OpenedTile2.Tiles) {
             this.table.Player1.OpenedTile2.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player1_opened_tiles2.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile3 && this.table.Player1.OpenedTile3.Tiles) {
             this.table.Player1.OpenedTile3.Tiles.forEach((tile:any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player1_opened_tiles3.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile4 && this.table.Player1.OpenedTile4.Tiles) {
             this.table.Player1.OpenedTile4.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player1_opened_tiles4.push(tile)
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedPe && this.table.Player1.OpenedPe.Tiles) {
             this.table.Player1.OpenedPe.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player1_pe_tiles.push(tile)
             });
         }
@@ -316,9 +316,9 @@ export default class Table extends Vue {
                     return
                 }
                 if (!this.is_player1) {
-                    tile.State = this.tile_state.PLAYER
+                    tile.State = TileState.PLAYER
                 } else {
-                    tile.State = this.tile_state.OPPONENT
+                    tile.State = TileState.OPPONENT
                 }
                 this.player2_hand.push(tile)
             });
@@ -326,9 +326,9 @@ export default class Table extends Vue {
         if (this.table && this.table.Player2 && this.table.Player2.TsumoriTile) {
             let tile = this.table.Player2.TsumoriTile
             if (!this.is_player1) {
-                tile.State = this.tile_state.PLAYER
+                tile.State = TileState.PLAYER
             } else {
-                tile.State = this.tile_state.OPPONENT
+                tile.State = TileState.OPPONENT
             }
             this.player2_tsumori_tile = tile
         } else {
@@ -336,31 +336,31 @@ export default class Table extends Vue {
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile1.Tiles) {
             this.table.Player2.OpenedTile1.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player2_opened_tiles1.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile2 && this.table.Player2.OpenedTile2.Tiles) {
             this.table.Player2.OpenedTile2.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player2_opened_tiles2.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile3 && this.table.Player2.OpenedTile3.Tiles) {
             this.table.Player2.OpenedTile3.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player2_opened_tiles3.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedTile4 && this.table.Player2.OpenedTile4.Tiles) {
             this.table.Player2.OpenedTile4.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player2_opened_tiles4.push(tile)
             });
         }
         if (this.table && this.table.Player2 && this.table.Player2.OpenedPe && this.table.Player2.OpenedPe.Tiles) {
             this.table.Player2.OpenedPe.Tiles.forEach((tile: any) => {
-                tile.State = this.tile_state.OPEN
+                tile.State = TileState.OPEN
                 this.player2_pe_tiles.push(tile)
             });
         }
@@ -374,10 +374,10 @@ export default class Table extends Vue {
                     tile.ID = -1
                     tile.Name = "null"
                     tile.Num = -1
-                    tile.State = this.tile_state.NULL
+                    tile.State = TileState.NULL
                     tile.Suit = -1
                 }
-                tile.State = this.tile_state.DOWN
+                tile.State = TileState.DOWN
                 this.tsumo.push(tile)
             });
         }
@@ -416,7 +416,7 @@ export default class Table extends Vue {
                     }
                     operators.forEach((operator: any) => {
                         this.operators.push(operator);
-                        if (operator.OperatorType !== this.operator_type.OPERATOR_DAHAI) {
+                        if (operator.OperatorType != OperatorType.OPERATOR_DAHAI) {
                             this.operatorsWithoutDahai.push(operator);
                         }
                     });
@@ -434,7 +434,7 @@ export default class Table extends Vue {
                             RoomID: this.get_room_id(),
                             PlayerID: this.player_id,
                             TargetTiles: [],
-                            OperatorType: this.operator_type.OPERATOR_START_GAME
+                            OperatorType: OperatorType.OPERATOR_START_GAME
                         })
                     }
                 }

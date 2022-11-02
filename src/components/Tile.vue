@@ -16,7 +16,7 @@ export const NullTile = {
     ID: -1,
     Name: "null",
     Num: -1,
-    State: new TileState().NULL,
+    State: TileState.NULL,
     Suit: -1,
 }
 export default class Tile extends Vue {
@@ -63,7 +63,7 @@ export default class Tile extends Vue {
     }
 
     update_filename() {
-        if (this.state == new TileState().NULL) {
+        if (this.state == TileState.NULL) {
             this.filename = "p_null.gif"
             return
         }
@@ -72,49 +72,49 @@ export default class Tile extends Vue {
         filename += "p_"
 
         switch (this.suit) {
-            case new Suit().MANZU:
+            case Suit.MANZU:
                 filename += "ms"
                 filename += this.num
                 break
-            case new Suit().PINZU:
+            case Suit.PINZU:
                 filename += "ps"
                 filename += this.num
                 break
-            case new Suit().SOZU:
+            case Suit.SOZU:
                 filename += "ss"
                 filename += this.num
                 break
-            case new Suit().TON:
+            case Suit.TON:
                 filename += "ji_e"
                 break
-            case new Suit().NAN:
+            case Suit.NAN:
                 filename += "ji_s"
                 break
-            case new Suit().SHA:
+            case Suit.SHA:
                 filename += "ji_w"
                 break
-            case new Suit().PE:
+            case Suit.PE:
                 filename += "ji_n"
                 break
-            case new Suit().HAKU:
+            case Suit.HAKU:
                 filename += "no"
                 break
-            case new Suit().HATSU:
+            case Suit.HATSU:
                 filename += "ji_h"
                 break
-            case new Suit().CHUN:
+            case Suit.CHUN:
                 filename += "ji_c"
                 break
         }
         switch (this.state) {
-            case new TileState().PLAYER:
+            case TileState.PLAYER:
                 filename += "_0"
                 break
-            case new TileState().OPPONENT:
+            case TileState.OPPONENT:
                 filename = "p_bk_5.gif"
                 this.filename = filename
                 return
-            case new TileState().OPEN:
+            case TileState.OPEN:
                 console.log(this.reverse)
                 if (this.reverse) {
                     filename += "_2"
@@ -122,13 +122,13 @@ export default class Tile extends Vue {
                     filename += "_1"
                 }
                 break
-            case new TileState().OPEN_LEFT:
+            case TileState.OPEN_LEFT:
                 filename += "_3"
                 break
-            case new TileState().OPEN_RIGHT:
+            case TileState.OPEN_RIGHT:
                 filename += "_4"
                 break
-            case new TileState().DOWN:
+            case TileState.DOWN:
                 filename = "p_bk_1.gif"
                 this.filename = filename
                 return

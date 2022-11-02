@@ -1,54 +1,57 @@
-export default class OperatorType {
-    OPERATOR_START_GAME = 1
-    OPERATOR_SKIP = 2
-    OPERATOR_DRAW = 3
-    OPERATOR_DAHAI = 4
-    OPERATOR_RON = 5
-    OPERATOR_PON = 6
-    OPERATOR_CHI = 7
-    OPERATOR_DAIMINKAN = 8
-    OPERATOR_TSUMO = 9
-    OPERATOR_ANKAN = 10
-    OPERATOR_KAKAN = 11
-    OPERATOR_PE = 12
-    OPERATOR_KYUSHUKYUHAI = 13
-    OPERATOR_REACH = 14
-    OPERATOR_OK = 15
+enum OperatorType {
+    OPERATOR_START_GAME = 1,
+    OPERATOR_SKIP = 2,
+    OPERATOR_DRAW = 3,
+    OPERATOR_DAHAI = 4,
+    OPERATOR_RON = 5,
+    OPERATOR_PON = 6,
+    OPERATOR_CHI = 7,
+    OPERATOR_DAIMINKAN = 8,
+    OPERATOR_TSUMO = 9,
+    OPERATOR_ANKAN = 10,
+    OPERATOR_KAKAN = 11,
+    OPERATOR_PE = 12,
+    OPERATOR_KYUSHUKYUHAI = 13,
+    OPERATOR_REACH = 14,
+    OPERATOR_OK = 15,
+}
 
-    to_string(num: number): string {
+export default OperatorType
+
+export class OperatorTypeToString {
+    to_string(num: OperatorType): string {
         switch (num) {
-            case this.OPERATOR_START_GAME:
+            case OperatorType.OPERATOR_START_GAME:
                 return "ゲーム開始"
-            case this.OPERATOR_SKIP:
+            case OperatorType.OPERATOR_SKIP:
                 return "スキップ"
-            case this.OPERATOR_DRAW:
+            case OperatorType.OPERATOR_DRAW:
                 return "引く"
-            case this.OPERATOR_DAHAI:
+            case OperatorType.OPERATOR_DAHAI:
                 return "打牌"
-            case this.OPERATOR_RON:
+            case OperatorType.OPERATOR_RON:
                 return "ロン"
-            case this.OPERATOR_PON:
+            case OperatorType.OPERATOR_PON:
                 return "ポン"
-            case this.OPERATOR_CHI:
+            case OperatorType.OPERATOR_CHI:
                 return "チー"
-            case this.OPERATOR_DAIMINKAN:
+            case OperatorType.OPERATOR_DAIMINKAN:
                 return "カン"
-            case this.OPERATOR_TSUMO:
+            case OperatorType.OPERATOR_TSUMO:
                 return "ツモ"
-            case this.OPERATOR_ANKAN:
+            case OperatorType.OPERATOR_ANKAN:
                 return "カン"
-            case this.OPERATOR_KAKAN:
+            case OperatorType.OPERATOR_KAKAN:
                 return "カン"
-            case this.OPERATOR_PE:
+            case OperatorType.OPERATOR_PE:
                 return "北抜き"
-            case this.OPERATOR_KYUSHUKYUHAI:
+            case OperatorType.OPERATOR_KYUSHUKYUHAI:
                 return "九種九牌"
-            case this.OPERATOR_REACH:
+            case OperatorType.OPERATOR_REACH:
                 return "リーチ"
-            case this.OPERATOR_OK:
+            case OperatorType.OPERATOR_OK:
                 return "OK"
         }
         return "????"
     }
 }
-
