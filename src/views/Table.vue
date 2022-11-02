@@ -471,6 +471,7 @@ export default class Table extends Vue {
 }
 
 .operators {
+    z-index: 1000;
     position: absolute;
     top: 42vh;
 }
@@ -509,8 +510,6 @@ export default class Table extends Vue {
 .table {
     position: absolute;
     top: 0;
-    z-index: 1;
-    background-color: rgb(86, 106, 79);
     width: 100vw;
     max-width: 100vw;
     min-width: 100vw;
@@ -540,8 +539,10 @@ export default class Table extends Vue {
 
 .table_wrap {
     height: 100vh;
-    width: 100vh;
+    width: 100vw;
+    background-color: rgb(86, 106, 79);
 }
 
-.dialog {}
+.dialog {
+}
 </style>
