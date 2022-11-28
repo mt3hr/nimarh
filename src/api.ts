@@ -23,6 +23,10 @@ class API {
         return new WebSocket("ws://" + this.hostname + ":" + this.port + "/nimar/ws_operators?tableid=" + tableid + "&playerid=" + playerid)
     }
 
+    generate_message_socket(tableid: string, playerid: string): WebSocket {
+        return new WebSocket("ws://" + this.hostname + ":" + this.port + "/nimar/ws_message?tableid=" + tableid + "&playerid=" + playerid)
+    }
+
     create_table_promise(table_name: string): Promise<any> {
         return fetch("http://" + this.hostname + ":" + this.port + "/nimar/create_table?tablename=" + table_name)
     }

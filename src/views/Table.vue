@@ -1,5 +1,6 @@
 <template>
     <div class="multiply"></div>
+
     <div class="table_wrap">
         <v-container class="table" :class="playerrotateclass">
             <v-spacer />
@@ -144,7 +145,48 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog class="dialog" v-model="show_message" persistent>
+            <v-card class="pa-3">
+                <v-card-text v-if="message.MessageType == MessageAgari">
+                    <p>{{ message.Agari.Name }}</p>
+                    <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
+                        {{ yaku.Han }}翻</p>
+                    <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn>OK</v-btn>
+                    <!--//TODO click ok-->
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
+    <v-card v-if="table && table.Status" class="game_info pa-0 ma-0">
+        <v-card-title>
+            {{ table.Name }}
+        </v-card-title>
+        <v-card-text>
+            <span v-if="table.Status.Kaze == TON">東</span>
+            <span v-if="table.Status.Kaze == NAN">南</span>
+            <span v-if="table.Status.Kaze == SHA">西</span>
+            <span v-if="table.Status.Kaze == PE">北</span>
+            <span>{{ table.Status.NumberOfKyoku }}局</span>
+            <span>{{ table.Status.NumberOfHonba }}本場</span>
+            <span>（リーチ棒{{ table.Status.ReachTablePoint / 1000 }}本）</span>
+        </v-card-text>
+        <v-card-text>
+            <span>{{ table.Player1.Name }} : {{ table.Player1.Point }} 点</span>
+        </v-card-text>
+        <v-card-text>
+            <span>{{ table.Player2.Name }} : {{ table.Player2.Point }} 点</span>
+        </v-card-text>
+        <v-card-text>
+            <span>親: {{ table.Status.Oya.Name }}</span>
+        </v-card-text>
+        <v-card-text>
+            <span>手番: {{ table.Status.PlayerWithTurn.Name }}</span>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -156,8 +198,9 @@ import TileState from '@/nimar/TileState';
 import { Vue, Options } from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import Tile, { NullTile } from '../components/Tile.vue'
-import { isPlaceholder } from '@babel/types';
-import { watch } from 'vue';
+import Message from '@/nimar/Message';
+import MessageType from '@/nimar/MessageType';
+import Kaze from '@/nimar/Kaze';
 
 @Options({
     components: {
@@ -170,6 +213,7 @@ import { watch } from 'vue';
 export default class Table extends Vue {
     game_table_socket: WebSocket
     operators_socket: WebSocket
+    message_socket: WebSocket
     table_socket = api.generate_list_table_socket()
     is_show_player_name_dialog = false
     is_show_wait_player_dialog = false
@@ -207,6 +251,19 @@ export default class Table extends Vue {
     nulltile = NullTile
     operatorTypeToString = new OperatorTypeToString()
     TileState = TileState
+
+    show_message = false
+    message: Message
+
+    MessageAgari = MessageType.MessageAgari
+    MessageKyushuKyuhai = MessageType.MessageKyushuKyuhai
+    MessageSukaikan = MessageType.MessageSukaikan
+    MessageRyuukyoku = MessageType.MessageRyuukyoku
+
+    TON = Kaze.TON
+    NAN = Kaze.NAN
+    SHA = Kaze.SHA
+    PE = Kaze.PE
 
     tile_on_click(tile: any): void {
         for (let i = 0; i < this.operators.length; i++) {
@@ -292,7 +349,7 @@ export default class Table extends Vue {
             });
         }
         if (this.table && this.table.Player1 && this.table.Player1.OpenedTile3 && this.table.Player1.OpenedTile3.Tiles) {
-            this.table.Player1.OpenedTile3.Tiles.forEach((tile:any) => {
+            this.table.Player1.OpenedTile3.Tiles.forEach((tile: any) => {
                 tile.State = TileState.OPEN
                 this.player1_opened_tiles3.push(tile)
             });
@@ -422,6 +479,14 @@ export default class Table extends Vue {
                     });
                     console.log(this.operatorsWithoutDahai)
                 }
+
+                this.message_socket = api.generate_message_socket(this.get_room_id(), player_id)
+                this.message_socket.onmessage = (e: MessageEvent) => {
+                    this.message = JSON.parse(e.data)
+                    console.log(this.message)
+                    this.show_message = true
+                }
+
             }).then(() => {
                 this.table_socket = api.generate_list_table_socket()
                 this.table_socket.onmessage = (e: MessageEvent) => {
@@ -538,11 +603,19 @@ export default class Table extends Vue {
 }
 
 .table_wrap {
+    position: absolute;
+    top: 0px;
     height: 100vh;
     width: 100vw;
     background-color: rgb(86, 106, 79);
 }
 
-.dialog {
+.dialog {}
+
+.game_info {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1000;
 }
 </style>

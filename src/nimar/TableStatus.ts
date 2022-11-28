@@ -6,6 +6,8 @@ export default interface TableStatus {
     NumberOfKyoku: number;
     NumberOfHonba: number;
     ReachTablePoint: number;
+    Oya?: Player;
+    Ko?: Player;
     ChichaPlayer?: Player;
     PlayerWithTurn?: Player;
     PlayerWithNotTurn?: Player;
