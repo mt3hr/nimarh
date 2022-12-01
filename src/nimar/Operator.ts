@@ -1,7 +1,7 @@
 import Tile from "./Tile";
 import OperatorType from "./OperatorType";
 
-export default interface Operator {
+export default class Operator {
     RoomID: string;
     PlayerID: string;
     TargetTiles: (Tile | undefined)[];

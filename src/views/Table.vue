@@ -155,8 +155,7 @@
                     <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn>OK</v-btn>
-                    <!--//TODO click ok-->
+                    <v-btn @click="send_ok_operator">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -201,6 +200,7 @@ import Tile, { NullTile } from '../components/Tile.vue'
 import Message from '@/nimar/Message';
 import MessageType from '@/nimar/MessageType';
 import Kaze from '@/nimar/Kaze';
+import Operator from '@/nimar/Operator';
 
 @Options({
     components: {
@@ -209,6 +209,8 @@ import Kaze from '@/nimar/Kaze';
         Kawa,
     },
 })
+
+//TODO OpenedTilesのそれぞれのVueComonent用意したほうがいいかもしれない。牌倒すやつないと暗槓がわからん
 
 export default class Table extends Vue {
     game_table_socket: WebSocket
@@ -508,6 +510,18 @@ export default class Table extends Vue {
 
     to_table_list() {
         this.$router.replace('/')
+    }
+
+    send_ok_operator() {
+        api.get_player_id_promise()
+            .then((player_id) => {
+                let ok_operator = new Operator()
+                ok_operator.OperatorType = OperatorType.OPERATOR_OK
+                ok_operator.PlayerID = player_id
+                ok_operator.RoomID = this.get_room_id()
+                api.execute_operator_promise(ok_operator)
+                    .then(() => this.show_message = false)
+            })
     }
 }
 </script>
