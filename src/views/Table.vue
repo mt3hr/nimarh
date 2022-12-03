@@ -127,38 +127,6 @@
                 <v-spacer />
             </v-row>
         </v-container>
-        <v-dialog class="dialog" v-model="is_show_player_name_dialog" persistent>
-            <v-card class="pa-3">
-                <v-text-field @keypress.enter="join_room" v-model="player_name" placeholder="名前" autofocus />
-                <v-card-actions>
-                    <v-btn @click="to_table_list">戻る</v-btn>
-                    <v-spacer />
-                    <v-btn @click="join_room">入室</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog class="dialog" v-model="is_show_wait_player_dialog" persistent>
-            <v-card class="pa-3">
-                プレイヤーの参加を待っています
-                <v-card-actions>
-                    <v-btn @click="to_table_list">戻る</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog class="dialog" v-model="show_message" persistent>
-            <v-card class="pa-3">
-                <v-card-text v-if="message.MessageType == MessageAgari">
-                    <p>{{ message.Agari.Name }}</p>
-                    <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
-                        {{ yaku.Han }}翻</p>
-                    <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn @click="send_ok_operator">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
     <v-card v-if="table && table.Status" class="game_info pa-0 ma-0">
         <v-card-title>
@@ -186,6 +154,39 @@
             <span>手番: {{ table.Status.PlayerWithTurn.Name }}</span>
         </v-card-text>
     </v-card>
+    <v-dialog class="dialog pa-0 ma-0" v-model="is_show_player_name_dialog" persistent>
+        <v-card class="pa-3">
+            <v-text-field @keypress.enter="join_room" v-model="player_name" placeholder="名前" autofocus />
+            <v-card-actions>
+                <v-btn @click="to_table_list">戻る</v-btn>
+                <v-spacer />
+                <v-btn @click="join_room">入室</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <v-dialog class="dialog pa-0 ma-0" v-model="is_show_wait_player_dialog" persistent>
+        <v-card class="pa-3">
+            プレイヤーの参加を待っています
+            <v-card-actions>
+                <v-btn @click="to_table_list">戻る</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog class="dialog pa-0 ma-0" v-model="show_message" persistent>
+        <v-card class="pa-3">
+            <v-card-text v-if="message.MessageType == MessageAgari">
+                <p>{{ message.Agari.Name }}</p>
+                <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
+                    {{ yaku.Han }}翻</p>
+                <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn @click="send_ok_operator">OK</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
 </template>
 
 <script lang="ts">
@@ -513,6 +514,7 @@ export default class Table extends Vue {
     }
 
     send_ok_operator() {
+        this.show_message = false
         api.get_player_id_promise()
             .then((player_id) => {
                 let ok_operator = new Operator()
@@ -520,13 +522,39 @@ export default class Table extends Vue {
                 ok_operator.PlayerID = player_id
                 ok_operator.RoomID = this.get_room_id()
                 api.execute_operator_promise(ok_operator)
-                    .then(() => this.show_message = false)
             })
     }
 }
 </script>
 
 <style scoped>
+.table {
+    position: absolute;
+    top: 0;
+    padding-top: calc((100vh - 710px)/ 2);
+    padding-bottom: calc((100vh - 710px)/ 2);
+    padding-left: 0px;
+    padding-right: 0px;
+    /* 
+    border-inline: solid 50px;
+    border-image:
+        repeating-radial-gradient(rgb(76 54 37) 3%,
+            rgb(81, 46, 19) 41%,
+            rgb(66 55 47) 48%) 1/0 50px; 
+    */
+}
+
+.tbale .multiply {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    mix-blend-mode: multiply;
+    background-color: rgba(150, 183, 157, 44%);
+}
+
 .player1_rotate {}
 
 .player2_rotate {
@@ -586,35 +614,7 @@ export default class Table extends Vue {
     height: 59px;
 }
 
-.table {
-    position: absolute;
-    top: 0;
-    width: 100vw;
-    max-width: 100vw;
-    min-width: 100vw;
-    padding-top: calc((100vh - 710px)/ 2);
-    padding-bottom: calc((100vh - 710px)/ 2);
-    padding-left: 0px;
-    padding-right: 0px;
-    /* 
-    border-inline: solid 50px;
-    border-image:
-        repeating-radial-gradient(rgb(76 54 37) 3%,
-            rgb(81, 46, 19) 41%,
-            rgb(66 55 47) 48%) 1/0 50px; 
-    */
-}
 
-.tbale .multiply {
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 100;
-    mix-blend-mode: multiply;
-    background-color: rgba(150, 183, 157, 44%);
-}
 
 .table_wrap {
     position: absolute;
