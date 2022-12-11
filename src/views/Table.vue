@@ -176,10 +176,37 @@
     <v-dialog class="dialog pa-0 ma-0" v-model="show_message" persistent>
         <v-card class="pa-3">
             <v-card-text v-if="message.MessageType == MessageAgari">
+                <!-- //TODO 和了系を出力して -->
                 <p>{{ message.Agari.Name }}</p>
                 <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
                     {{ yaku.Han }}翻</p>
                 <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageKyushuKyuhai">
+                <p>九種九牌</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageSukaikan">
+                <p>四開槓</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageRyukyoku">
+                <p>流局</p>
+                <p>
+                    <span>{{ table.Player1.Name }}:</span>
+                    <span v-if="message.Ryukyoku.Player1Tempai">聴牌</span>
+                    <span v-else>ノーテン</span>
+                    <span>{{ message.Ryukyoku.Player1Bappu }}</span>
+                </p>
+                <p>
+                    <span>{{ table.Player2.Name }}:</span>
+                    <span v-if="message.Ryukyoku.Player2Tempai">聴牌</span>
+                    <span v-else>ノーテン</span>
+                    <span>{{ message.Ryukyoku.Player2Bappu }}</span>
+                </p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageMatchResult">
+                <p>終局</p>
+                <p>勝者: {{ message.MatchResult.WinnerPlayer.Name }}: {{ message.MatchResult.WinnerPlayer.Point }}</p>
+                <p>敗者: {{ message.MatchResult.LoserPlayer.Name }}: {{ message.MatchResult.LoserPlayer.Point }}</p>
             </v-card-text>
             <v-card-actions>
                 <v-btn @click="send_ok_operator">OK</v-btn>
@@ -261,7 +288,8 @@ export default class Table extends Vue {
     MessageAgari = MessageType.MessageAgari
     MessageKyushuKyuhai = MessageType.MessageKyushuKyuhai
     MessageSukaikan = MessageType.MessageSukaikan
-    MessageRyuukyoku = MessageType.MessageRyuukyoku
+    MessageRyukyoku = MessageType.MessageRyukyoku
+    MessageMatchResult = MessageType.MessageMatchResult
 
     TON = Kaze.TON
     NAN = Kaze.NAN
@@ -463,7 +491,6 @@ export default class Table extends Vue {
                 this.is_show_wait_player_dialog = true
                 this.game_table_socket.onmessage = (e: MessageEvent) => {
                     this.table = JSON.parse(e.data)
-                    console.log(this.table)
                 }
 
                 this.operators_socket = api.generate_operators_socket(this.get_room_id(), this.player_id)
@@ -480,14 +507,23 @@ export default class Table extends Vue {
                             this.operatorsWithoutDahai.push(operator);
                         }
                     });
-                    console.log(this.operatorsWithoutDahai)
                 }
 
                 this.message_socket = api.generate_message_socket(this.get_room_id(), player_id)
                 this.message_socket.onmessage = (e: MessageEvent) => {
                     this.message = JSON.parse(e.data)
-                    console.log(this.message)
                     this.show_message = true
+                    if (this.message.MessageType == MessageType.MessageAgari) {
+                        if (this.message.Agari.ID == this.player1_id) {
+                            this.table.Player1.Hand.forEach(tile => {
+                                tile.State = TileState.OPEN
+                            });
+                        } else if (this.message.Agari.ID == this.player2_id) {
+                            this.table.Player1.Hand.forEach(tile => {
+                                tile.State = TileState.OPEN
+                            });
+                        }
+                    }
                 }
 
             }).then(() => {
@@ -522,6 +558,11 @@ export default class Table extends Vue {
                 ok_operator.PlayerID = player_id
                 ok_operator.RoomID = this.get_room_id()
                 api.execute_operator_promise(ok_operator)
+            })
+            .then(() => {
+                if (this.message.MessageType == this.MessageMatchResult) {
+                    location.href = "/"
+                }
             })
     }
 }
