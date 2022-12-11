@@ -115,7 +115,6 @@ export default class Tile extends Vue {
                 this.filename = filename
                 return
             case TileState.OPEN:
-                console.log(this.reverse)
                 if (this.reverse) {
                     filename += "_2"
                 } else {

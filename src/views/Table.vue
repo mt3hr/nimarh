@@ -213,7 +213,9 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-
+    <v-snackbar class="flush" v-model="show_flush" :timeout="1000">
+        <p>{{ flush.Player.Name }} : {{ flush.Message }}</p>
+    </v-snackbar>
 </template>
 
 <script lang="ts">
@@ -229,6 +231,7 @@ import Message from '@/nimar/Message';
 import MessageType from '@/nimar/MessageType';
 import Kaze from '@/nimar/Kaze';
 import Operator from '@/nimar/Operator';
+import Flush from '@/nimar/Flush';
 
 @Options({
     components: {
@@ -244,6 +247,7 @@ export default class Table extends Vue {
     game_table_socket: WebSocket
     operators_socket: WebSocket
     message_socket: WebSocket
+    flush_socket: WebSocket
     table_socket = api.generate_list_table_socket()
     is_show_player_name_dialog = false
     is_show_wait_player_dialog = false
@@ -284,6 +288,9 @@ export default class Table extends Vue {
 
     show_message = false
     message: Message
+
+    flush: Flush
+    show_flush = false
 
     MessageAgari = MessageType.MessageAgari
     MessageKyushuKyuhai = MessageType.MessageKyushuKyuhai
@@ -524,6 +531,12 @@ export default class Table extends Vue {
                             });
                         }
                     }
+                }
+
+                this.flush_socket = api.generate_flush_socket(this.get_room_id(), player_id)
+                this.flush_socket.onmessage = (e: MessageEvent) => {
+                    this.flush = JSON.parse(e.data)
+                    this.show_flush = true
                 }
 
             }).then(() => {

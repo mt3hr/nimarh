@@ -8,7 +8,7 @@ class API {
 
     get_player_id_promise(): Promise<any> {
         return fetch("http://" + this.hostname + ":" + this.port + "/nimar/get_player_id")
-          .then((res) => res.json())
+            .then((res) => res.json())
     }
 
     generate_list_table_socket(): WebSocket {
@@ -25,6 +25,10 @@ class API {
 
     generate_message_socket(tableid: string, playerid: string): WebSocket {
         return new WebSocket("ws://" + this.hostname + ":" + this.port + "/nimar/ws_message?tableid=" + tableid + "&playerid=" + playerid)
+    }
+
+    generate_flush_socket(tableid: string, playerid: string): WebSocket {
+        return new WebSocket("ws://" + this.hostname + ":" + this.port + "/nimar/ws_flush?tableid=" + tableid + "&playerid=" + playerid)
     }
 
     create_table_promise(table_name: string): Promise<any> {
