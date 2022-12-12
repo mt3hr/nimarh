@@ -182,7 +182,7 @@
                 <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
             </v-card-text>
             <v-card-actions>
-                <v-btn @click="send_ok_operator">OK</v-btn>
+                <v-btn @click.once="send_ok_operator">OK</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
