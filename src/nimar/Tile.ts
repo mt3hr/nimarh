@@ -7,4 +7,5 @@ export default interface Tile {
     Dora: boolean;
     Akadora: boolean;
     Suit?: Suit;
+    DoraHyoujiHai: boolean;
 }

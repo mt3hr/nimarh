@@ -515,7 +515,11 @@ export default class Table extends Vue {
                     tile.State = TileState.NULL
                     tile.Suit = -1
                 }
-                tile.State = TileState.DOWN
+                if (tile.DoraHyoujiHai) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.DOWN
+                }
                 this.tsumo.push(tile)
             });
         }
