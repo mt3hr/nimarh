@@ -5,6 +5,7 @@ import Tile from "./Tile";
 export default interface Player {
     Name: string;
     ID: string;
+    Point: number;
     Hand: (Tile | undefined)[];
     TsumoriTile?: Tile;
     OpenedTile1?: OpenedTiles;

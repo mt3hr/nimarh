@@ -177,16 +177,107 @@
         <v-card class="pa-3">
             <v-card-text v-if="message.MessageType == MessageAgari">
                 <p>{{ message.Agari.Name }}</p>
+                <v-container>
+                    <v-row>
+                        <v-spacer />
+                        <Tile v-for="(tile) in message.Agari.DoraHyoujiHais" :key="tile.Name" :suit="tile.Suit"
+                            :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                    </v-row>
+                    <v-row v-if="message.Agari.Player.Status.Reach">
+                        <v-spacer />
+                        <Tile v-for="(tile) in message.Agari.UraDoraHyoujiHais" :key="tile.Name" :suit="tile.Suit"
+                            :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <Tile v-for="(tile) in message.Agari.Hand" :key="tile.Name" :suit="tile.Suit"
+                                :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            <Tile :suit="nulltile.Suit" :num="nulltile.Num" :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile1.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile1.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile1.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile2.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile2.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile2.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile3.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile3.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile3.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile4.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile4.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile4.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.Pe.Tiles">
+                                <Tile v-for="(tile) in message.Agari.Pe.Tiles" :key="tile.Name" :suit="tile.Suit"
+                                    :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.Pe.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+
+
+                            <Tile v-if="message.Agari.TsumoriTile" :key="message.Agari.TsumoriTile.Name"
+                                :suit="message.Agari.TsumoriTile.Suit" :num="message.Agari.TsumoriTile.Num"
+                                :state="TileState.OPEN" :table="table" />
+                            <Tile v-if="message.Agari.RonTile" :key="message.Agari.RonTile.Name"
+                                :suit="message.Agari.RonTile.Suit" :num="message.Agari.RonTile.Num"
+                                :state="TileState.OPEN" :table="table" />
+                        </v-col>
+                    </v-row>
+                </v-container>
                 <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
                     {{ yaku.Han }}翻</p>
                 <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageKyushuKyuhai">
+                <p>九種九牌</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageSukaikan">
+                <p>四開槓</p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageRyukyoku">
+                <p>流局</p>
+                <p>
+                    <span>{{ table.Player1.Name }}:</span>
+                    <span v-if="message.Ryukyoku.Player1Tempai">聴牌</span>
+                    <span v-else>ノーテン</span>
+                    <span>{{ message.Ryukyoku.Player1Bappu }}</span>
+                </p>
+                <p>
+                    <span>{{ table.Player2.Name }}:</span>
+                    <span v-if="message.Ryukyoku.Player2Tempai">聴牌</span>
+                    <span v-else>ノーテン</span>
+                    <span>{{ message.Ryukyoku.Player2Bappu }}</span>
+                </p>
+            </v-card-text>
+            <v-card-text v-if="message.MessageType == MessageMatchResult">
+                <p>終局</p>
+                <p>勝者: {{ message.MatchResult.WinnerPlayer.Name }}: {{ message.MatchResult.WinnerPlayer.Point }}</p>
+                <p>敗者: {{ message.MatchResult.LoserPlayer.Name }}: {{ message.MatchResult.LoserPlayer.Point }}</p>
             </v-card-text>
             <v-card-actions>
                 <v-btn @click.once="send_ok_operator">OK</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
-
+    <v-snackbar class="flush" v-model="show_flush" :timeout="2000">
+        <p>{{ flush.Player.Name }} : {{ flush.Message }}</p>
+    </v-snackbar>
 </template>
 
 <script lang="ts">
@@ -202,6 +293,7 @@ import Message from '@/nimar/Message';
 import MessageType from '@/nimar/MessageType';
 import Kaze from '@/nimar/Kaze';
 import Operator from '@/nimar/Operator';
+import Flush from '@/nimar/Flush';
 
 @Options({
     components: {
@@ -217,6 +309,7 @@ export default class Table extends Vue {
     game_table_socket: WebSocket
     operators_socket: WebSocket
     message_socket: WebSocket
+    flush_socket: WebSocket
     table_socket = api.generate_list_table_socket()
     is_show_player_name_dialog = false
     is_show_wait_player_dialog = false
@@ -258,10 +351,14 @@ export default class Table extends Vue {
     show_message = false
     message: Message
 
+    flush: Flush
+    show_flush = false
+
     MessageAgari = MessageType.MessageAgari
     MessageKyushuKyuhai = MessageType.MessageKyushuKyuhai
     MessageSukaikan = MessageType.MessageSukaikan
-    MessageRyuukyoku = MessageType.MessageRyuukyoku
+    MessageRyukyoku = MessageType.MessageRyukyoku
+    MessageMatchResult = MessageType.MessageMatchResult
 
     TON = Kaze.TON
     NAN = Kaze.NAN
@@ -291,6 +388,9 @@ export default class Table extends Vue {
     @Watch('table')
     updateTable() {
         this.is_player1 = this.table.Player1.ID == this.player_id
+        this.player1_id = this.table.Player1.ID
+        this.player2_id = this.table.Player2.ID
+
         if (this.is_player1) {
             this.playerrotateclass = "player1_rotate"
             this.playerclass = "player1"
@@ -321,9 +421,25 @@ export default class Table extends Vue {
                     return
                 }
                 if (this.is_player1) {
-                    tile.State = TileState.PLAYER
+                    console.log(this.message)
+                    if (this.message) {
+                        console.log(this.message.MessageType)
+                        console.log(this.player1_id)
+                        if (this.message.Agari) {
+                            console.log(this.message.Agari.ID)
+                        }
+                    }
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.PLAYER
+                    }
                 } else {
-                    tile.State = TileState.OPPONENT
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.OPPONENT
+                    }
                 }
                 this.player1_hand.push(tile)
             });
@@ -331,9 +447,17 @@ export default class Table extends Vue {
         if (this.table && this.table.Player1 && this.table.Player1.TsumoriTile) {
             let tile = this.table.Player1.TsumoriTile
             if (this.is_player1) {
-                tile.State = TileState.PLAYER
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.PLAYER
+                }
             } else {
-                tile.State = TileState.OPPONENT
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.OPPONENT
+                }
             }
             this.player1_tsumori_tile = tile
         } else {
@@ -376,9 +500,17 @@ export default class Table extends Vue {
                     return
                 }
                 if (!this.is_player1) {
-                    tile.State = TileState.PLAYER
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.PLAYER
+                    }
                 } else {
-                    tile.State = TileState.OPPONENT
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.OPPONENT
+                    }
                 }
                 this.player2_hand.push(tile)
             });
@@ -386,9 +518,17 @@ export default class Table extends Vue {
         if (this.table && this.table.Player2 && this.table.Player2.TsumoriTile) {
             let tile = this.table.Player2.TsumoriTile
             if (!this.is_player1) {
-                tile.State = TileState.PLAYER
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.PLAYER
+                }
             } else {
-                tile.State = TileState.OPPONENT
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.OPPONENT
+                }
             }
             this.player2_tsumori_tile = tile
         } else {
@@ -437,13 +577,15 @@ export default class Table extends Vue {
                     tile.State = TileState.NULL
                     tile.Suit = -1
                 }
-                tile.State = TileState.DOWN
+                if (tile.DoraHyoujiHai) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.DOWN
+                }
                 this.tsumo.push(tile)
             });
         }
 
-        this.player1_id = this.table.Player1.ID
-        this.player2_id = this.table.Player2.ID
     }
 
     created() {
@@ -463,7 +605,6 @@ export default class Table extends Vue {
                 this.is_show_wait_player_dialog = true
                 this.game_table_socket.onmessage = (e: MessageEvent) => {
                     this.table = JSON.parse(e.data)
-                    console.log(this.table)
                 }
 
                 this.operators_socket = api.generate_operators_socket(this.get_room_id(), this.player_id)
@@ -480,14 +621,20 @@ export default class Table extends Vue {
                             this.operatorsWithoutDahai.push(operator);
                         }
                     });
-                    console.log(this.operatorsWithoutDahai)
                 }
 
                 this.message_socket = api.generate_message_socket(this.get_room_id(), player_id)
                 this.message_socket.onmessage = (e: MessageEvent) => {
                     this.message = JSON.parse(e.data)
-                    console.log(this.message)
                     this.show_message = true
+                    console.log(this.message)
+                    this.updateTable()
+                }
+
+                this.flush_socket = api.generate_flush_socket(this.get_room_id(), player_id)
+                this.flush_socket.onmessage = (e: MessageEvent) => {
+                    this.flush = JSON.parse(e.data)
+                    this.show_flush = true
                 }
 
             }).then(() => {
@@ -522,6 +669,12 @@ export default class Table extends Vue {
                 ok_operator.PlayerID = player_id
                 ok_operator.RoomID = this.get_room_id()
                 api.execute_operator_promise(ok_operator)
+            })
+            .then(() => {
+                this.message = null
+                if (this.message.MessageType == this.MessageMatchResult) {
+                    location.href = "/"
+                }
             })
     }
 }
