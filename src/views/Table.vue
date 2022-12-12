@@ -213,7 +213,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-snackbar class="flush" v-model="show_flush" :timeout="1000">
+    <v-snackbar class="flush" v-model="show_flush" :timeout="2000">
         <p>{{ flush.Player.Name }} : {{ flush.Message }}</p>
     </v-snackbar>
 </template>
@@ -326,6 +326,9 @@ export default class Table extends Vue {
     @Watch('table')
     updateTable() {
         this.is_player1 = this.table.Player1.ID == this.player_id
+        this.player1_id = this.table.Player1.ID
+        this.player2_id = this.table.Player2.ID
+
         if (this.is_player1) {
             this.playerrotateclass = "player1_rotate"
             this.playerclass = "player1"
@@ -356,9 +359,25 @@ export default class Table extends Vue {
                     return
                 }
                 if (this.is_player1) {
-                    tile.State = TileState.PLAYER
+                    console.log(this.message)
+                    if (this.message) {
+                        console.log(this.message.MessageType)
+                        console.log(this.player1_id)
+                        if (this.message.Agari) {
+                            console.log(this.message.Agari.ID)
+                        }
+                    }
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.PLAYER
+                    }
                 } else {
-                    tile.State = TileState.OPPONENT
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.OPPONENT
+                    }
                 }
                 this.player1_hand.push(tile)
             });
@@ -366,9 +385,17 @@ export default class Table extends Vue {
         if (this.table && this.table.Player1 && this.table.Player1.TsumoriTile) {
             let tile = this.table.Player1.TsumoriTile
             if (this.is_player1) {
-                tile.State = TileState.PLAYER
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.PLAYER
+                }
             } else {
-                tile.State = TileState.OPPONENT
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.OPPONENT
+                }
             }
             this.player1_tsumori_tile = tile
         } else {
@@ -411,9 +438,17 @@ export default class Table extends Vue {
                     return
                 }
                 if (!this.is_player1) {
-                    tile.State = TileState.PLAYER
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.PLAYER
+                    }
                 } else {
-                    tile.State = TileState.OPPONENT
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                        tile.State = TileState.OPEN
+                    } else {
+                        tile.State = TileState.OPPONENT
+                    }
                 }
                 this.player2_hand.push(tile)
             });
@@ -421,9 +456,17 @@ export default class Table extends Vue {
         if (this.table && this.table.Player2 && this.table.Player2.TsumoriTile) {
             let tile = this.table.Player2.TsumoriTile
             if (!this.is_player1) {
-                tile.State = TileState.PLAYER
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.PLAYER
+                }
             } else {
-                tile.State = TileState.OPPONENT
+                if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player2_id) {
+                    tile.State = TileState.OPEN
+                } else {
+                    tile.State = TileState.OPPONENT
+                }
             }
             this.player2_tsumori_tile = tile
         } else {
@@ -477,8 +520,6 @@ export default class Table extends Vue {
             });
         }
 
-        this.player1_id = this.table.Player1.ID
-        this.player2_id = this.table.Player2.ID
     }
 
     created() {
@@ -520,17 +561,7 @@ export default class Table extends Vue {
                 this.message_socket.onmessage = (e: MessageEvent) => {
                     this.message = JSON.parse(e.data)
                     this.show_message = true
-                    if (this.message.MessageType == MessageType.MessageAgari) {
-                        if (this.message.Agari.ID == this.player1_id) {
-                            this.table.Player1.Hand.forEach(tile => {
-                                tile.State = TileState.OPEN
-                            });
-                        } else if (this.message.Agari.ID == this.player2_id) {
-                            this.table.Player1.Hand.forEach(tile => {
-                                tile.State = TileState.OPEN
-                            });
-                        }
-                    }
+                    this.updateTable()
                 }
 
                 this.flush_socket = api.generate_flush_socket(this.get_room_id(), player_id)
@@ -573,6 +604,7 @@ export default class Table extends Vue {
                 api.execute_operator_promise(ok_operator)
             })
             .then(() => {
+                this.message = null
                 if (this.message.MessageType == this.MessageMatchResult) {
                     location.href = "/"
                 }
