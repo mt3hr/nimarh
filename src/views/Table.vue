@@ -176,8 +176,70 @@
     <v-dialog class="dialog pa-0 ma-0" v-model="show_message" persistent>
         <v-card class="pa-3">
             <v-card-text v-if="message.MessageType == MessageAgari">
-                <!-- //TODO 和了系を出力して -->
                 <p>{{ message.Agari.Name }}</p>
+                <v-container>
+                    <v-row>
+                        <v-spacer />
+                        <Tile v-for="(tile) in message.Agari.DoraHyoujiHais" :key="tile.Name" :suit="tile.Suit"
+                            :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                    </v-row>
+                    <v-row v-if="message.Agari.Player.Status.Reach">
+                        <v-spacer />
+                        <Tile v-for="(tile) in message.Agari.UraDoraHyoujiHais" :key="tile.Name" :suit="tile.Suit"
+                            :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <Tile v-for="(tile) in message.Agari.Hand" :key="tile.Name" :suit="tile.Suit"
+                                :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            <Tile :suit="nulltile.Suit" :num="nulltile.Num" :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile1.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile1.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile1.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile2.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile2.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile2.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile3.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile3.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile3.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.OpenedTile4.Tiles">
+                                <Tile v-for="(tile) in message.Agari.OpenedTile4.Tiles" :key="tile.Name"
+                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.OpenedTile4.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+                            <div v-if="message.Agari.Pe.Tiles">
+                                <Tile v-for="(tile) in message.Agari.Pe.Tiles" :key="tile.Name" :suit="tile.Suit"
+                                    :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                            </div>
+                            <Tile v-if="message.Agari.Pe.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
+                                :state="nulltile.State" :table="table" />
+
+
+
+                            <Tile v-if="message.Agari.TsumoriTile" :key="message.Agari.TsumoriTile.Name"
+                                :suit="message.Agari.TsumoriTile.Suit" :num="message.Agari.TsumoriTile.Num"
+                                :state="TileState.OPEN" :table="table" />
+                            <Tile v-if="message.Agari.RonTile" :key="message.Agari.RonTile.Name"
+                                :suit="message.Agari.RonTile.Suit" :num="message.Agari.RonTile.Num"
+                                :state="TileState.OPEN" :table="table" />
+                        </v-col>
+                    </v-row>
+                </v-container>
                 <p v-for="yaku in message.Agari.Point.MatchYakusForMessage" :key="yaku.Name"> {{ yaku.Name }}
                     {{ yaku.Han }}翻</p>
                 <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
@@ -565,6 +627,7 @@ export default class Table extends Vue {
                 this.message_socket.onmessage = (e: MessageEvent) => {
                     this.message = JSON.parse(e.data)
                     this.show_message = true
+                    console.log(this.message)
                     this.updateTable()
                 }
 

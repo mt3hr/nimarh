@@ -1,4 +1,5 @@
 import OpenedTiles from "./OpenedTiles";
+import Player from "./Player";
 import Point from "./Point";
 import Tile from "./Tile";
 
@@ -14,4 +15,7 @@ export default interface Agari {
     OpenedTile4?: OpenedTiles;
     Pe?: OpenedTiles;
     Point?: Point;
+    DoraHyoujiHais: Array<Tile>;
+    UraDoraHyoujiHais: Array<Tile>;
+    Player: Player
 }
