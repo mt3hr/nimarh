@@ -671,8 +671,8 @@ export default class Table extends Vue {
                 api.execute_operator_promise(ok_operator)
             })
             .then(() => {
-                this.message = null
                 if (this.message.MessageType == this.MessageMatchResult) {
+                    this.message = null
                     location.href = "/"
                 }
             })
