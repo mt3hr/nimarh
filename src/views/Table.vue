@@ -194,38 +194,38 @@
                                 :num="tile.Num" :state="TileState.OPEN" :table="table" />
                             <Tile :suit="nulltile.Suit" :num="nulltile.Num" :state="nulltile.State" :table="table" />
 
-                            <div v-if="message.Agari.OpenedTile1.Tiles">
+                            <span v-if="message.Agari.OpenedTile1.Tiles">
                                 <Tile v-for="(tile) in message.Agari.OpenedTile1.Tiles" :key="tile.Name"
                                     :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
-                            </div>
+                            </span>
                             <Tile v-if="message.Agari.OpenedTile1.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
-                            <div v-if="message.Agari.OpenedTile2.Tiles">
+                            <span v-if="message.Agari.OpenedTile2.Tiles">
                                 <Tile v-for="(tile) in message.Agari.OpenedTile2.Tiles" :key="tile.Name"
                                     :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
-                            </div>
+                            </span>
                             <Tile v-if="message.Agari.OpenedTile2.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
-                            <div v-if="message.Agari.OpenedTile3.Tiles">
+                            <span v-if="message.Agari.OpenedTile3.Tiles">
                                 <Tile v-for="(tile) in message.Agari.OpenedTile3.Tiles" :key="tile.Name"
                                     :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
-                            </div>
+                            </span>
                             <Tile v-if="message.Agari.OpenedTile3.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
-                            <div v-if="message.Agari.OpenedTile4.Tiles">
+                            <span v-if="message.Agari.OpenedTile4.Tiles">
                                 <Tile v-for="(tile) in message.Agari.OpenedTile4.Tiles" :key="tile.Name"
                                     :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
-                            </div>
+                            </span>
                             <Tile v-if="message.Agari.OpenedTile4.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
-                            <div v-if="message.Agari.Pe.Tiles">
+                            <span v-if="message.Agari.Pe.Tiles">
                                 <Tile v-for="(tile) in message.Agari.Pe.Tiles" :key="tile.Name" :suit="tile.Suit"
                                     :num="tile.Num" :state="TileState.OPEN" :table="table" />
-                            </div>
+                            </span>
                             <Tile v-if="message.Agari.Pe.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
