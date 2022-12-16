@@ -275,8 +275,8 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-snackbar class="flush" v-model="show_flush" :timeout="2000">
-        <p>{{ flush.Player.Name }} : {{ flush.Message }}</p>
+    <v-snackbar class="flush" v-model="show_flush" :timeout="2000000" :location="'left bottom'" :width="'auto'">
+        <p class="flushmessage">{{ flush.Player.Name }} : {{ flush.Message }}</p>
     </v-snackbar>
 </template>
 
@@ -672,9 +672,9 @@ export default class Table extends Vue {
             })
             .then(() => {
                 if (this.message.MessageType == this.MessageMatchResult) {
-                    this.message = null
                     location.href = "/"
                 }
+                this.message = null
             })
     }
 }
@@ -784,5 +784,18 @@ export default class Table extends Vue {
     top: 5px;
     right: 5px;
     z-index: 1000;
+}
+
+.flush {
+    width: 200px;
+}
+
+.flushmessage {
+    width: fit-content;
+}
+</style>
+<style>
+.v-snackbar__wrapper {
+    min-width: fit-content !important;
 }
 </style>
