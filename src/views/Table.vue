@@ -662,6 +662,9 @@ export default class Table extends Vue {
 
     send_ok_operator() {
         this.show_message = false
+        if (this.message.MessageType == this.MessageMatchResult) {
+            location.href = "/"
+        }
         api.get_player_id_promise()
             .then((player_id) => {
                 let ok_operator = new Operator()
@@ -671,9 +674,6 @@ export default class Table extends Vue {
                 api.execute_operator_promise(ok_operator)
             })
             .then(() => {
-                if (this.message.MessageType == this.MessageMatchResult) {
-                    location.href = "/"
-                }
                 this.message = null
             })
     }
