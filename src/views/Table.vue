@@ -275,7 +275,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-snackbar class="flush" v-model="show_flush" :timeout="2000000" :location="'left bottom'" :width="'auto'">
+    <v-snackbar class="flush" v-model="show_flush" :timeout="2000" :location="'left bottom'" :width="'auto'">
         <p class="flushmessage">{{ flush.Player.Name }} : {{ flush.Message }}</p>
     </v-snackbar>
 </template>
