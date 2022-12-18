@@ -604,16 +604,21 @@ export default class Table extends Vue {
                 this.operators_socket.onmessage = (e: MessageEvent) => {
                     this.operators.splice(0);
                     this.operatorsWithoutDahai.splice(0);
-                    let operators = JSON.parse(e.data)
+                    let operators: Array<Operator> = JSON.parse(e.data)
                     if (!operators) {
                         return
                     }
-                    operators.forEach((operator: any) => {
-                        this.operators.push(operator);
-                        if (operator.OperatorType != OperatorType.OPERATOR_DAHAI) {
-                            this.operatorsWithoutDahai.push(operator);
-                        }
-                    });
+                    if ((player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2).Status.Reach &&
+                        operators.length == 1 && operators[0].OperatorType == OperatorType.OPERATOR_DAHAI) {
+                        api.execute_operator_promise(operators[0])
+                    } else {
+                        operators.forEach((operator: any) => {
+                            this.operators.push(operator);
+                            if (operator.OperatorType != OperatorType.OPERATOR_DAHAI) {
+                                this.operatorsWithoutDahai.push(operator);
+                            }
+                        });
+                    }
                 }
 
                 this.message_socket = api.generate_message_socket(this.get_room_id(), player_id)
