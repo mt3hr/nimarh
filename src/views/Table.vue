@@ -291,6 +291,8 @@ import MessageType from '@/nimar/MessageType';
 import Kaze from '@/nimar/Kaze';
 import Operator from '@/nimar/Operator';
 import Flush from '@/nimar/Flush';
+import dahai_se_url from '@/assets/dahai_se.wav'
+const dahai_se = new Audio(dahai_se_url)
 
 @Options({
     components: {
@@ -576,7 +578,7 @@ export default class Table extends Vue {
                 this.tsumo.push(tile)
             });
         }
-
+        dahai_se.play()
     }
 
     created() {
