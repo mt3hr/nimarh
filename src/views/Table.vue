@@ -175,7 +175,7 @@
 
     <v-dialog class="dialog pa-0 ma-0" v-model="show_message" persistent>
         <v-card class="pa-3">
-            <v-card-text v-if="message.MessageType == MessageAgari">
+            <v-card-text v-if="message && message.Agari && message.MessageType == MessageAgari">
                 <p>{{ message.Agari.Name }}</p>
                 <v-container>
                     <v-row>
@@ -228,9 +228,6 @@
                             </span>
                             <Tile v-if="message.Agari.Pe.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
-
-
-
                             <Tile v-if="message.Agari.TsumoriTile" :key="message.Agari.TsumoriTile.Name"
                                 :suit="message.Agari.TsumoriTile.Suit" :num="message.Agari.TsumoriTile.Num"
                                 :state="TileState.OPEN" :table="table" />
@@ -244,13 +241,13 @@
                     {{ yaku.Han }}翻</p>
                 <p>{{ message.Agari.Point.Hu }}符 {{ message.Agari.Point.Han }}翻 {{ message.Agari.Point.Point }}点</p>
             </v-card-text>
-            <v-card-text v-if="message.MessageType == MessageKyushuKyuhai">
+            <v-card-text v-if="message && message.MessageType == MessageKyushuKyuhai">
                 <p>九種九牌</p>
             </v-card-text>
-            <v-card-text v-if="message.MessageType == MessageSukaikan">
+            <v-card-text v-if="message && message.MessageType == MessageSukaikan">
                 <p>四開槓</p>
             </v-card-text>
-            <v-card-text v-if="message.MessageType == MessageRyukyoku">
+            <v-card-text v-if="message && message.MessageType == MessageRyukyoku">
                 <p>流局</p>
                 <p>
                     <span>{{ table.Player1.Name }}:</span>
@@ -265,13 +262,13 @@
                     <span>{{ message.Ryukyoku.Player2Bappu }}</span>
                 </p>
             </v-card-text>
-            <v-card-text v-if="message.MessageType == MessageMatchResult">
+            <v-card-text v-if="message && message.MessageType == MessageMatchResult">
                 <p>終局</p>
                 <p>勝者: {{ message.MatchResult.WinnerPlayer.Name }}: {{ message.MatchResult.WinnerPlayer.Point }}</p>
                 <p>敗者: {{ message.MatchResult.LoserPlayer.Name }}: {{ message.MatchResult.LoserPlayer.Point }}</p>
             </v-card-text>
             <v-card-actions>
-                <v-btn @click.once="send_ok_operator">OK</v-btn>
+                <v-btn :disabled="disabled_ok_button" @click="send_ok_operator">OK</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -354,6 +351,8 @@ export default class Table extends Vue {
     flush: Flush
     show_flush = false
 
+    disabled_ok_button: boolean
+
     MessageAgari = MessageType.MessageAgari
     MessageKyushuKyuhai = MessageType.MessageKyushuKyuhai
     MessageSukaikan = MessageType.MessageSukaikan
@@ -421,15 +420,7 @@ export default class Table extends Vue {
                     return
                 }
                 if (this.is_player1) {
-                    console.log(this.message)
-                    if (this.message) {
-                        console.log(this.message.MessageType)
-                        console.log(this.player1_id)
-                        if (this.message.Agari) {
-                            console.log(this.message.Agari.ID)
-                        }
-                    }
-                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari.ID == this.player1_id) {
+                    if (this.message && this.message.MessageType == MessageType.MessageAgari && this.message.Agari && this.message.Agari.ID == this.player1_id) {
                         tile.State = TileState.OPEN
                     } else {
                         tile.State = TileState.PLAYER
@@ -627,7 +618,7 @@ export default class Table extends Vue {
                 this.message_socket.onmessage = (e: MessageEvent) => {
                     this.message = JSON.parse(e.data)
                     this.show_message = true
-                    console.log(this.message)
+                    this.disabled_ok_button = false
                     this.updateTable()
                 }
 
@@ -661,10 +652,7 @@ export default class Table extends Vue {
     }
 
     send_ok_operator() {
-        this.show_message = false
-        if (this.message.MessageType == this.MessageMatchResult) {
-            location.href = "/"
-        }
+        this.disabled_ok_button = true
         api.get_player_id_promise()
             .then((player_id) => {
                 let ok_operator = new Operator()
@@ -674,6 +662,10 @@ export default class Table extends Vue {
                 api.execute_operator_promise(ok_operator)
             })
             .then(() => {
+                if (this.message.MessageType == this.MessageMatchResult) {
+                    location.href = "/"
+                }
+                this.show_message = false
                 this.message = null
             })
     }

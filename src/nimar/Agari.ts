@@ -15,7 +15,7 @@ export default interface Agari {
     OpenedTile4?: OpenedTiles;
     Pe?: OpenedTiles;
     Point?: Point;
-    DoraHyoujiHais: Array<Tile>;
-    UraDoraHyoujiHais: Array<Tile>;
+    DoraHyoujiHais?: Array<Tile>;
+    UraDoraHyoujiHais?: Array<Tile>;
     Player: Player
 }

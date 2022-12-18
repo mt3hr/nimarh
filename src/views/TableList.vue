@@ -74,7 +74,8 @@ export default class TableList extends Vue {
   }
 
   join_table(tableID: string) {
-    this.$router.replace('/table?tableid=' + tableID)
+    this.table_socket.close()
+    this.$router.push('/table?tableid=' + tableID)
   }
 }
 </script>
