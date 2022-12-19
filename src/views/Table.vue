@@ -610,7 +610,13 @@ export default class Table extends Vue {
                     }
                     if ((player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2).Status.Reach &&
                         operators.length == 1 && operators[0].OperatorType == OperatorType.OPERATOR_DAHAI) {
-                        api.execute_operator_promise(operators[0])
+
+                        const sleep = async (msec) => {
+                            await new Promise(resolve => setTimeout(resolve, msec));
+                        };
+                        sleep(500).then(() => {
+                            api.execute_operator_promise(operators[0])
+                        })
                     } else {
                         operators.forEach((operator: any) => {
                             this.operators.push(operator);
