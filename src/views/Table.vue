@@ -299,6 +299,7 @@ import kan_voice_url from '@/assets/kan.mp3'
 import chi_voice_url from '@/assets/chi.mp3'
 import pon_voice_url from '@/assets/pon.mp3'
 import ron_voice_url from '@/assets/ron.mp3'
+import generateVoices from '@/voice/Voices';
 
 const dahai_se = new Audio(dahai_se_url)
 const reach_voice = new Audio(reach_voice_url)
@@ -308,6 +309,10 @@ const kan_voice = new Audio(kan_voice_url)
 const chi_voice = new Audio(chi_voice_url)
 const pon_voice = new Audio(pon_voice_url)
 const ron_voice = new Audio(ron_voice_url)
+
+const sleep = async (msec) => {
+    await new Promise(resolve => setTimeout(resolve, msec));
+};
 
 @Options({
     components: {
@@ -626,9 +631,6 @@ export default class Table extends Vue {
                     if ((player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2).Status.Reach &&
                         operators.length == 1 && operators[0].OperatorType == OperatorType.OPERATOR_DAHAI) {
 
-                        const sleep = async (msec) => {
-                            await new Promise(resolve => setTimeout(resolve, msec));
-                        };
                         sleep(500).then(() => {
                             api.execute_operator_promise(operators[0])
                         })
@@ -648,6 +650,17 @@ export default class Table extends Vue {
                     this.show_message = true
                     this.disabled_ok_button = false
                     this.updateTable()
+                    if (this.message.Agari) {
+                        let voices = generateVoices(this.message.Agari);
+                        for (let i = 0; i < voices.length - 1; i++) {
+                            voices[i].onended = () => {
+                                voices[i + 1].play()
+                            }
+                        }
+                        sleep(500).then(() => {
+                            voices[0].play()
+                        })
+                    }
                 }
 
                 this.flush_socket = api.generate_flush_socket(this.get_room_id(), player_id)
