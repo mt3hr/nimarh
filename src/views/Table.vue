@@ -292,13 +292,14 @@ import Kaze from '@/nimar/Kaze';
 import Operator from '@/nimar/Operator';
 import Flush from '@/nimar/Flush';
 import dahai_se_url from '@/assets/dahai_se.wav'
-import reach_voice_url from '@/assets/reach_se.mp3'
-import pe_voice_url from '@/assets/pe_se.mp3'
-import tsumo_voice_url from '@/assets/tsumo_se.mp3'
-import kan_voice_url from '@/assets/kan_se.mp3'
-import chi_voice_url from '@/assets/chi_se.mp3'
-import pon_voice_url from '@/assets/pon_se.mp3'
-import ron_voice_url from '@/assets/ron_se.mp3'
+import reach_voice_url from '@/assets/reach.mp3'
+import pe_voice_url from '@/assets/pe.mp3'
+import tsumo_voice_url from '@/assets/tsumo.mp3'
+import kan_voice_url from '@/assets/kan.mp3'
+import chi_voice_url from '@/assets/chi.mp3'
+import pon_voice_url from '@/assets/pon.mp3'
+import ron_voice_url from '@/assets/ron.mp3'
+
 const dahai_se = new Audio(dahai_se_url)
 const reach_voice = new Audio(reach_voice_url)
 const pe_voice = new Audio(pe_voice_url)
