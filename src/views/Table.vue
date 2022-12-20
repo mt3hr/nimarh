@@ -292,7 +292,21 @@ import Kaze from '@/nimar/Kaze';
 import Operator from '@/nimar/Operator';
 import Flush from '@/nimar/Flush';
 import dahai_se_url from '@/assets/dahai_se.wav'
+import reach_voice_url from '@/assets/reach_se.mp3'
+import pe_voice_url from '@/assets/pe_se.mp3'
+import tsumo_voice_url from '@/assets/tsumo_se.mp3'
+import kan_voice_url from '@/assets/kan_se.mp3'
+import chi_voice_url from '@/assets/chi_se.mp3'
+import pon_voice_url from '@/assets/pon_se.mp3'
+import ron_voice_url from '@/assets/ron_se.mp3'
 const dahai_se = new Audio(dahai_se_url)
+const reach_voice = new Audio(reach_voice_url)
+const pe_voice = new Audio(pe_voice_url)
+const tsumo_voice = new Audio(tsumo_voice_url)
+const kan_voice = new Audio(kan_voice_url)
+const chi_voice = new Audio(chi_voice_url)
+const pon_voice = new Audio(pon_voice_url)
+const ron_voice = new Audio(ron_voice_url)
 
 @Options({
     components: {
@@ -638,6 +652,29 @@ export default class Table extends Vue {
                 this.flush_socket = api.generate_flush_socket(this.get_room_id(), player_id)
                 this.flush_socket.onmessage = (e: MessageEvent) => {
                     this.flush = JSON.parse(e.data)
+                    switch (this.flush.Message) {
+                        case "立直":
+                            reach_voice.play()
+                            break
+                        case "北":
+                            pe_voice.play()
+                            break
+                        case "ツモ":
+                            tsumo_voice.play()
+                            break
+                        case "カン":
+                            kan_voice.play()
+                            break
+                        case "チー":
+                            chi_voice.play()
+                            break
+                        case "ポン":
+                            pon_voice.play()
+                            break
+                        case "ロン":
+                            ron_voice.play()
+                            break
+                    }
                     this.show_flush = true
                 }
 
