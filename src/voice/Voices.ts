@@ -404,7 +404,7 @@ export default function generateVoices(agari: Agari): any {
                 voices.push(dora_voice)
                 break
             case "裏ドラ":
-                voices.push(dora_voice)
+                voices.push(uradora_voice)
                 break
             case "抜きドラ":
                 voices.push(nukidora_voice)
