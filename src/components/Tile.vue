@@ -21,10 +21,10 @@ export const NullTile = {
 }
 export default class Tile extends Vue {
     @Prop() table: any
-    @Prop({default: NullTile.Suit}) suit: number
-    @Prop({default: NullTile.Name}) name: string
-    @Prop({default: NullTile.Num}) num: number
-    @Prop({default: NullTile.State}) state: TileState
+    @Prop({ default: NullTile.Suit }) suit: number
+    @Prop({ default: NullTile.Name }) name: string
+    @Prop({ default: NullTile.Num }) num: number
+    @Prop({ default: NullTile.State }) state: TileState
     @Prop({ default: false }) rotate180: boolean
     @Prop({ default: false }) reverse: boolean
     filename: string
@@ -108,13 +108,19 @@ export default class Tile extends Vue {
         }
         switch (this.state) {
             case TileState.PLAYER:
+                this.height = 59
+                this.width = 33
                 filename += "_0"
                 break
             case TileState.OPPONENT:
+                this.height = 59
+                this.width = 33
                 filename = "p_bk_5.gif"
                 this.filename = filename
                 return
             case TileState.OPEN:
+                this.height = 59
+                this.width = 33
                 if (this.reverse) {
                     filename += "_2"
                 } else {
@@ -122,12 +128,18 @@ export default class Tile extends Vue {
                 }
                 break
             case TileState.OPEN_LEFT:
+                this.height = 44
+                this.width = 49
                 filename += "_3"
                 break
             case TileState.OPEN_RIGHT:
+                this.height = 44
+                this.width = 49
                 filename += "_4"
                 break
             case TileState.DOWN:
+                this.height = 59
+                this.width = 33
                 filename = "p_bk_1.gif"
                 this.filename = filename
                 return
@@ -140,12 +152,14 @@ export default class Tile extends Vue {
 
 <style scoped>
 .tile {
+    /*
     width: 33px;
     min-width: 33px;
     max-width: 33px;
     height: 59px;
     min-height: 59px;
-    max-height: 59px;
+    max-height: 59px; 
+    */
     display: inline-block;
 }
 

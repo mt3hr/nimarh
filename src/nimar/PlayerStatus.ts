@@ -15,4 +15,5 @@ export default interface PlayerStatus {
     NakareWhenAround: boolean;
     KyushuKyuhai: boolean;
     Kaze?: Kaze;
+    ReachTiming: number;
 }

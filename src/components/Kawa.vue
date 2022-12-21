@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts">
+import Player from '@/nimar/Player';
 import TileState from '@/nimar/TileState';
 import { Options, Vue } from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
@@ -65,7 +66,7 @@ export default class Kawa extends Vue {
 
         let tiles = this.kawa_player_id == this.table.Player1.ID ? this.table.Player1.Kawa : this.table.Player2.Kawa
         if (this.kawa_player_id == this.table.Player1.ID) {
-           if (this.player_id == this.table.Player1.ID) {
+            if (this.player_id == this.table.Player1.ID) {
                 this.kawa1class = "up"
                 this.kawa2class = "center"
                 this.kawa3class = "down"
@@ -75,7 +76,7 @@ export default class Kawa extends Vue {
                 this.kawa3class = "up"
             }
         } else {
-           if (this.player_id == this.table.Player1.ID) {
+            if (this.player_id == this.table.Player1.ID) {
                 this.kawa1class = "down"
                 this.kawa2class = "center"
                 this.kawa3class = "up"
@@ -86,9 +87,14 @@ export default class Kawa extends Vue {
             }
         }
         if (tiles) {
+            let player:Player = this.player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2
             for (let i = 0; i < tiles.length; i++) {
                 let tile = tiles[i]
                 tile.State = TileState.OPEN
+                if (i == player.Status.ReachTiming) {
+                    tile.State = TileState.OPEN_LEFT
+                }
+
                 if (i < 6) {
                     this.tiles1.push(tile)
                 } else if (i < 12) {

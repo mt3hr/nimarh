@@ -24,18 +24,22 @@
                 :class="[playerclass, flexreverse]">
                 <v-spacer />
                 <v-col :cols="'auto'" class="ma-0 pa-0 opened_tiles down" :class="playerclass">
-                    <Tile class="tile" v-for="(tile) in player2_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player2_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player2_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player2_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="is_player1"
-                        :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player2.OpenedTile1, index, 2)"
+                        :style="calc_tile_style(table.Player2.OpenedTile1, index, 2)" @click="tile_on_click(tile)"
+                        :reverse="is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player2.OpenedTile2, index, 2)"
+                        :style="calc_tile_style(table.Player2.OpenedTile2, index, 2)" @click="tile_on_click(tile)"
+                        :reverse="is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player2.OpenedTile3, index, 2)"
+                        :style="calc_tile_style(table.Player2.OpenedTile3, index, 2)" @click="tile_on_click(tile)"
+                        :reverse="is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player2_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player2.OpenedTile4, index, 2)"
+                        :style="calc_tile_style(table.Player2.OpenedTile4, index, 2)" @click="tile_on_click(tile)"
+                        :reverse="is_player1" :rotate180="!is_player1" :table="table" />
                     <Tile class="tile" v-for="(tile) in player2_pe_tiles" :key="tile.Name" :suit="tile.Suit"
                         :num="tile.Num" :state="tile.State" :reverse="is_player1" @click="tile_on_click(tile)"
                         :rotate180="!is_player1" :table="table" />
@@ -68,18 +72,22 @@
             <v-row :align-content="'center'" class="opened_tiles_wrap up pa-0 ma-0" :class="[playerclass, flexreverse]">
                 <v-spacer />
                 <v-col :cols="'auto'" class="ma-0 pa-0 opened_tiles up" :class="playerclass">
-                    <Tile class="tile" v-for="(tile) in player1_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player1_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player1_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
-                        :rotate180="!is_player1" :table="table" />
-                    <Tile class="tile" v-for="(tile) in player1_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
-                        :num="tile.Num" :state="tile.State" @click="tile_on_click(tile)" :reverse="!is_player1"
-                        :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles1" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player1.OpenedTile1, index, 1)"
+                        :style="calc_tile_style(table.Player1.OpenedTile1, index, 1)" @click="tile_on_click(tile)"
+                        :reverse="!is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles2" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player1.OpenedTile2, index, 1)"
+                        :style="calc_tile_style(table.Player1.OpenedTile2, index, 1)" @click="tile_on_click(tile)"
+                        :reverse="!is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles3" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player1.OpenedTile3, index, 1)"
+                        :style="calc_tile_style(table.Player1.OpenedTile3, index, 1)" @click="tile_on_click(tile)"
+                        :reverse="!is_player1" :rotate180="!is_player1" :table="table" />
+                    <Tile class="tile" v-for="(tile, index) in player1_opened_tiles4" :key="tile.Name" :suit="tile.Suit"
+                        :num="tile.Num" :state="calc_tile_state(table.Player1.OpenedTile4, index, 1)"
+                        :style="calc_tile_style(table.Player1.OpenedTile4, index, 1)" @click="tile_on_click(tile)"
+                        :reverse="!is_player1" :rotate180="!is_player1" :table="table" />
                     <Tile class="tile" v-for="(tile) in player1_pe_tiles" :key="tile.Name" :reverse="!is_player1"
                         :suit="tile.Suit" :num="tile.Num" :state="tile.State" :rotate180="!is_player1"
                         @click="tile_on_click(tile)" :table="table" />
@@ -195,36 +203,44 @@
                             <Tile :suit="nulltile.Suit" :num="nulltile.Num" :state="nulltile.State" :table="table" />
 
                             <span v-if="message.Agari.OpenedTile1.Tiles">
-                                <Tile v-for="(tile) in message.Agari.OpenedTile1.Tiles" :key="tile.Name"
-                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                                <Tile v-for="(tile, index) in message.Agari.OpenedTile1.Tiles" :key="tile.Name"
+                                    :state="calc_tile_state(message.Agari.OpenedTile1, index, 1)"
+                                    :style="calc_tile_style(message.Agari.OpenedTile1, index, 1)" :suit="tile.Suit"
+                                    :num="tile.Num" :table="table" />
                             </span>
                             <Tile v-if="message.Agari.OpenedTile1.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
                             <span v-if="message.Agari.OpenedTile2.Tiles">
-                                <Tile v-for="(tile) in message.Agari.OpenedTile2.Tiles" :key="tile.Name"
-                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                                <Tile v-for="(tile, index) in message.Agari.OpenedTile2.Tiles" :key="tile.Name"
+                                    :state="calc_tile_state(message.Agari.OpenedTile2, index, 1)"
+                                    :style="calc_tile_style(message.Agari.OpenedTile2, index, 1)" :suit="tile.Suit"
+                                    :num="tile.Num" :table="table" />
                             </span>
                             <Tile v-if="message.Agari.OpenedTile2.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
                             <span v-if="message.Agari.OpenedTile3.Tiles">
-                                <Tile v-for="(tile) in message.Agari.OpenedTile3.Tiles" :key="tile.Name"
-                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                                <Tile v-for="(tile, index) in message.Agari.OpenedTile3.Tiles" :key="tile.Name"
+                                    :state="calc_tile_state(message.Agari.OpenedTile3, index, 1)"
+                                    :style="calc_tile_style(message.Agari.OpenedTile3, index, 1)" :suit="tile.Suit"
+                                    :num="tile.Num" :table="table" />
                             </span>
                             <Tile v-if="message.Agari.OpenedTile3.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
                             <span v-if="message.Agari.OpenedTile4.Tiles">
-                                <Tile v-for="(tile) in message.Agari.OpenedTile4.Tiles" :key="tile.Name"
-                                    :suit="tile.Suit" :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                                <Tile v-for="(tile, index) in message.Agari.OpenedTile4.Tiles" :key="tile.Name"
+                                    :state="calc_tile_state(message.Agari.OpenedTile4, index, 1)"
+                                    :style="calc_tile_style(message.Agari.OpenedTile4, index, 1)" :suit="tile.Suit"
+                                    :num="tile.Num" :table="table" />
                             </span>
                             <Tile v-if="message.Agari.OpenedTile4.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
 
                             <span v-if="message.Agari.Pe.Tiles">
                                 <Tile v-for="(tile) in message.Agari.Pe.Tiles" :key="tile.Name" :suit="tile.Suit"
-                                    :num="tile.Num" :state="TileState.OPEN" :table="table" />
+                                    :num="tile.Num" :table="table" />
                             </span>
                             <Tile v-if="message.Agari.Pe.Tiles" :suit="nulltile.Suit" :num="nulltile.Num"
                                 :state="nulltile.State" :table="table" />
@@ -300,6 +316,8 @@ import chi_voice_url from '@/assets/chi.mp3'
 import pon_voice_url from '@/assets/pon.mp3'
 import ron_voice_url from '@/assets/ron.mp3'
 import generateVoices from '@/voice/Voices';
+import OpenedTiles from '@/nimar/OpenedTiles';
+import OpenType from '@/nimar/OpenType';
 
 const dahai_se = new Audio(dahai_se_url)
 const reach_voice = new Audio(reach_voice_url)
@@ -732,6 +750,30 @@ export default class Table extends Vue {
                 this.show_message = false
                 this.message = null
             })
+    }
+    calc_tile_state(opened_tiles: OpenedTiles, index: number, player_number: number): TileState {
+        if (opened_tiles.OpenType == OpenType.OPEN_PON ||
+            opened_tiles.OpenType == OpenType.OPEN_CHI ||
+            opened_tiles.OpenType == OpenType.OPEN_DAIMINKAN) {
+            if (index == 0) {
+                return TileState.OPEN_LEFT
+            }
+        } else if (opened_tiles.OpenType == OpenType.OPEN_ANKAN) {
+            if (index == 0 || index == 3) {
+                return TileState.DOWN
+            }
+        }
+        return TileState.OPEN
+    }
+    calc_tile_style(opened_tiles: OpenedTiles, index: number, player_number: number): any {
+        if (opened_tiles.OpenType == OpenType.OPEN_PON ||
+            opened_tiles.OpenType == OpenType.OPEN_CHI ||
+            opened_tiles.OpenType == OpenType.OPEN_DAIMINKAN) {
+            if (index == 0 && player_number == 2) {
+                return { position: "relative", bottom: "15px" }
+            }
+        }
+        return {}
     }
 }
 </script>
