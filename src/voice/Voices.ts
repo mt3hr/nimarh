@@ -411,5 +411,179 @@ export default function generateVoices(agari: Agari): any {
                 break
         }
     })
+
+    if (agari.Oya) {
+        voices.push(oyano_voice)
+    } else {
+        voices.push(kono_voice)
+    }
+
+    if (agari.Point.Han >= 13) {
+        voices.push(yakuman_voice)
+    } else {
+        switch (agari.Point.Hu) {
+            case 20:
+                voices.push(hu20_voice)
+                break
+            case 25:
+                voices.push(hu25_voice)
+                break
+            case 30:
+                voices.push(hu30_voice)
+                break
+            case 40:
+                voices.push(hu40_voice)
+                break
+            case 50:
+                voices.push(hu50_voice)
+                break
+            case 60:
+                voices.push(hu60_voice)
+                break
+            case 70:
+                voices.push(hu70_voice)
+                break
+            case 80:
+                voices.push(hu80_voice)
+                break
+            case 90:
+                voices.push(hu90_voice)
+                break
+            case 100:
+                voices.push(hu100_voice)
+                break
+            case 110:
+                voices.push(hu110_voice)
+                break
+        }
+        switch (agari.Point.Han) {
+            case 1:
+                voices.push(han1_voice)
+                break
+            case 2:
+                voices.push(han2_voice)
+                break
+            case 3:
+                voices.push(han3_voice)
+                break
+            case 4:
+                voices.push(han4_voice)
+                break
+            case 5:
+                voices.push(han5_voice)
+                break
+            case 6:
+                voices.push(han6_voice)
+                break
+            case 7:
+                voices.push(han7_voice)
+                break
+            case 8:
+                voices.push(han8_voice)
+                break
+            case 9:
+                voices.push(han9_voice)
+                break
+            case 10:
+                voices.push(han10_voice)
+                break
+            case 11:
+                voices.push(han11_voice)
+                break
+            case 12:
+                voices.push(han12_voice)
+                break
+        }
+    }
+
+    voices.push(ha_voice)
+
+    switch (Math.floor(agari.Point.Point / 10000) % 10) {
+        case 1:
+            voices.push(n10000_voice)
+            break
+        case 2:
+            voices.push(n20000_voice)
+            break
+        case 3:
+            voices.push(n30000_voice)
+            break
+        case 4:
+            voices.push(n40000_voice)
+            break
+        case 5:
+            voices.push(n50000_voice)
+            break
+        case 6:
+            voices.push(n60000_voice)
+            break
+        case 7:
+            voices.push(n70000_voice)
+            break
+        case 8:
+            voices.push(n80000_voice)
+            break
+        case 9:
+            voices.push(n90000_voice)
+            break
+    }
+    switch (Math.floor(agari.Point.Point / 1000) % 10) {
+        case 1:
+            voices.push(n1000_voice)
+            break
+        case 2:
+            voices.push(n2000_voice)
+            break
+        case 3:
+            voices.push(n3000_voice)
+            break
+        case 4:
+            voices.push(n4000_voice)
+            break
+        case 5:
+            voices.push(n5000_voice)
+            break
+        case 6:
+            voices.push(n6000_voice)
+            break
+        case 7:
+            voices.push(n7000_voice)
+            break
+        case 8:
+            voices.push(n8000_voice)
+            break
+        case 9:
+            voices.push(n9000_voice)
+            break
+    }
+    switch (Math.floor(agari.Point.Point / 100) % 10) {
+        case 1:
+            voices.push(n100_voice)
+            break
+        case 2:
+            voices.push(n200_voice)
+            break
+        case 3:
+            voices.push(n300_voice)
+            break
+        case 4:
+            voices.push(n400_voice)
+            break
+        case 5:
+            voices.push(n500_voice)
+            break
+        case 6:
+            voices.push(n600_voice)
+            break
+        case 7:
+            voices.push(n700_voice)
+            break
+        case 8:
+            voices.push(n800_voice)
+            break
+        case 9:
+            voices.push(n900_voice)
+            break
+    }
     return voices
 }

@@ -18,4 +18,5 @@ export default interface Agari {
     DoraHyoujiHais?: Array<Tile>;
     UraDoraHyoujiHais?: Array<Tile>;
     Player: Player
+    Oya: boolean
 }
