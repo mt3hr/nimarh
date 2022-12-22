@@ -4,6 +4,7 @@ enum MessageType {
     MessageSukaikan = 3,
     MessageRyukyoku = 4,
     MessageMatchResult = 5,
+    MessageNagashiMangan = 6,
 }
 
 export default MessageType

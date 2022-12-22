@@ -161,6 +161,7 @@ export default class Tile extends Vue {
     max-height: 59px; 
     */
     display: inline-block;
+    z-index: 5;
 }
 
 .rotate180 {
