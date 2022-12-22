@@ -87,7 +87,7 @@ export default class Kawa extends Vue {
             }
         }
         if (tiles) {
-            let player:Player = this.player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2
+            let player:Player = this.kawa_player_id == this.table.Player1.ID ? this.table.Player1 : this.table.Player2
             for (let i = 0; i < tiles.length; i++) {
                 let tile = tiles[i]
                 tile.State = TileState.OPEN
